@@ -35,11 +35,20 @@ const Header = () => {
   }, []);
 
   return (
-    <AppBar position="sticky">
+    <AppBar
+      color="secondary"
+      position="sticky"
+      sx={{
+        boxShadow: "none",
+        borderBottom: "2px solid #b71c1c",
+        paddingBottom: "5px",
+      }}
+    >
       <Toolbar>
         <Box width={"10%"}>
           <Link to={"/"} style={{ color: "white", textDecoration: "none" }}>
             <TheatersIcon
+              color="primary"
               onClick={() => setPageValue(false)}
               fontSize="large"
             />
@@ -52,7 +61,7 @@ const Header = () => {
             options={movies && movies.map((movie) => movie.title)}
             renderInput={(params) => (
               <TextField
-                variant="standard"
+                variant="outlined"
                 {...params}
                 InputProps={{
                   ...params.InputProps,
@@ -73,7 +82,7 @@ const Header = () => {
         <Box display={"flex"}>
           <Tabs
             textColor="inherit"
-            indicatorColor="secondary"
+            indicatorColor="primary"
             value={pageValue}
             onChange={(e, val) => setPageValue(val)}
           >
