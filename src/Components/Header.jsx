@@ -7,7 +7,6 @@ import {
   TextField,
   Toolbar,
 } from "@mui/material";
-import TheatersIcon from "@mui/icons-material/Theaters";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
@@ -48,12 +47,11 @@ const Header = () => {
       <Toolbar>
         <Box width={"10%"}>
           <Link to={"/"} style={{ color: "white", textDecoration: "none" }}>
-            {/* <TheatersIcon
-              sx={{ color: "#d50000" }}
+            <img
+              className="logo"
               onClick={() => setPageValue(false)}
-              fontSize="large"
-            /> */}
-            <img className="logo" src={logo} />
+              src={logo}
+            />
           </Link>
         </Box>
         <Box width={"30%"} margin="auto">
