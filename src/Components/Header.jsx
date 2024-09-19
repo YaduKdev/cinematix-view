@@ -13,6 +13,7 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { getAllMovies } from "../api-calls/api-calls";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 const Header = () => {
   const [pageValue, setPageValue] = useState(false);
@@ -47,11 +48,12 @@ const Header = () => {
       <Toolbar>
         <Box width={"10%"}>
           <Link to={"/"} style={{ color: "white", textDecoration: "none" }}>
-            <TheatersIcon
-              color="primary"
+            {/* <TheatersIcon
+              sx={{ color: "#d50000" }}
               onClick={() => setPageValue(false)}
               fontSize="large"
-            />
+            /> */}
+            <img className="logo" src={logo} />
           </Link>
         </Box>
         <Box width={"30%"} margin="auto">
