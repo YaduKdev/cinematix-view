@@ -39,8 +39,6 @@ const Header = () => {
       color="secondary"
       position="sticky"
       sx={{
-        boxShadow: "none",
-        borderBottom: "2px solid #b71c1c",
         paddingBottom: "5px",
       }}
     >

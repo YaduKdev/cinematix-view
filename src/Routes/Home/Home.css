@@ -1,0 +1,95 @@
+.hero {
+  width: 100%;
+  height: 50rem;
+  background-image: url("../../assets/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hero-text-container {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-text {
+  width: 100%;
+  height: 75%;
+  background-image: url("../../assets/tt.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 1366px) {
+  .hero {
+    height: 37rem;
+  }
+}
+
+@media (max-width: 1080px) {
+  .hero {
+    height: 32rem;
+  }
+}
+
+@media (max-width: 880px) {
+  .hero {
+    height: 43rem;
+    background-image: url("../../assets/bg_small.jpg");
+  }
+
+  .hero-text-container {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .hero-text {
+    width: 30%;
+    height: 80%;
+    background-image: url("../../assets/tt_portrait.png");
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 31rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero {
+    background-size: 24rem;
+  }
+
+  .hero-text-container {
+    width: 100%;
+  }
+
+  .hero-text {
+    width: 55%;
+  }
+}
+
+@media (max-width: 300px) {
+  .hero-text {
+    width: 82%;
+    height: 100%;
+  }
+}
+
+@media (max-width: 250px) {
+  .hero-text {
+    width: 100%;
+  }
+}
+
+@media (prefers-color-scheme: light) and (max-width: 880px) {
+  .hero {
+    height: 43rem;
+    background-image: url("../../assets/bg_small_light.jpg");
+  }
+}
