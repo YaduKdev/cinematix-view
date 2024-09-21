@@ -15,17 +15,18 @@ import { Link } from "react-router-dom";
 
 const HeroCarousel = () => {
   return (
-    <Box margin="auto" width={"100%"}>
-      <Box
-        sx={{
-          textAlign: "center",
-        }}
-      >
-        <Typography margin="auto" fontSize={25} color="primary">
+    <Box margin="auto" width={"100%"} paddingTop={"100px"}>
+      <Box margin="auto">
+        <Typography
+          gutterBottom={true}
+          align="center"
+          variant="h4"
+          color="primary"
+        >
           LATEST RELEASES
         </Typography>
       </Box>
-      <Box width={"100%"} margin={"auto"}>
+      <Box width={"100%"} margin={"50px auto 100px"}>
         <Swiper
           effect={"coverflow"}
           grabCursor={true}
@@ -52,13 +53,7 @@ const HeroCarousel = () => {
               slidesPerView: 3,
             },
           }}
-          pagination={{ el: ".swiper-pagination", clickable: true }}
-          navigation={{
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-            clickable: "true",
-          }}
-          modules={[EffectCoverflow, Pagination, Navigation]}
+          modules={[EffectCoverflow]}
           className="swiper_container"
         >
           <SwiperSlide>
@@ -81,16 +76,6 @@ const HeroCarousel = () => {
           <SwiperSlide>
             <img src={img3} />
           </SwiperSlide>
-
-          <div className="slider-controler">
-            <div className="swiper-button-prev slider-arrow">
-              <ion-icon name="arrow-back-outline"></ion-icon>
-            </div>
-            <div className="swiper-button-next slider-arrow">
-              <ion-icon name="arrow-forward-outline"></ion-icon>
-            </div>
-            <div className="swiper-pagination"></div>
-          </div>
         </Swiper>
       </Box>
     </Box>

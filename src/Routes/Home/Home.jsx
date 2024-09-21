@@ -20,7 +20,7 @@ const Home = () => {
   const notified = (
     <Tooltip title="Remove Notification">
       <IconButton>
-        <NotificationsActiveIcon fontSize="large" color="primary" />
+        <NotificationsActiveIcon fontSize="large" sx={{ color: "#b71c1c" }} />
       </IconButton>
     </Tooltip>
   );

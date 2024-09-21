@@ -13,7 +13,7 @@ const theme = createTheme({
     dark: {
       palette: {
         primary: {
-          main: red[900],
+          main: grey[50],
         },
         secondary: {
           main: grey[900],
@@ -23,7 +23,7 @@ const theme = createTheme({
     light: {
       palette: {
         primary: {
-          main: red[900],
+          main: grey[900],
         },
         secondary: {
           main: grey[50],
