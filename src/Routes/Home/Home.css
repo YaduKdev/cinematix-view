@@ -4,6 +4,7 @@
   background-image: url("../../assets/bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  position: relative;
 }
 
 .hero-text-container {
@@ -20,6 +21,13 @@
   background-image: url("../../assets/tt.png");
   background-size: 100%;
   background-repeat: no-repeat;
+}
+
+.notifications-container {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  cursor: pointer;
 }
 
 @media (max-width: 1366px) {
@@ -51,6 +59,11 @@
     width: 30%;
     height: 80%;
     background-image: url("../../assets/tt_portrait.png");
+  }
+
+  .notifications-container {
+    left: 30px;
+    top: 30px;
   }
 }
 
