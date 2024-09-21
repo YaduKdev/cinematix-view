@@ -52,6 +52,10 @@ body {
   text-align: center;
 }
 
+.swiper-slide img:hover {
+  border: 2px solid #ffb954;
+}
+
 @media (max-width: 500px) {
   .swiper_container {
     height: 65rem;
