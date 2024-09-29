@@ -1,0 +1,39 @@
+.preview-container {
+  padding: 80px 50px 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.preview {
+  width: 304px;
+  height: 400px;
+  background-size: cover;
+  animation: preview-normal 1s forwards;
+  background-color: aquamarine;
+}
+
+.preview:hover {
+  animation: preview-hover 1s forwards;
+  cursor: pointer;
+}
+
+@keyframes preview-hover {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes preview-normal {
+  0% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

@@ -1,8 +1,10 @@
 import React from "react";
-import img1 from "../assets/1.jpg";
-import img2 from "../assets/2.jpg";
-import img3 from "../assets/3.jpg";
-import img4 from "../assets/4.jpg";
+import img1 from "../assets/1.avif";
+import img2 from "../assets/2.avif";
+import img3 from "../assets/3.avif";
+import img4 from "../assets/4.avif";
+import img5 from "../assets/5.avif";
+import img6 from "../assets/6.avif";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow } from "swiper/modules";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -13,7 +15,7 @@ import "swiper/css/pagination";
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const HeroCarousel = () => {
+const HeroCarousel = ({ movies }) => {
   return (
     <Box margin="auto" width={"100%"} paddingTop={"100px"}>
       <Box
@@ -59,43 +61,21 @@ const HeroCarousel = () => {
             depth: 100,
             modifier: 2.5,
           }}
-          breakpoints={{
-            0: {
-              slidesPerView: "auto",
-            },
-            500: {
-              slidesPerView: 1,
-            },
-            1000: {
-              slidesPerView: 2,
-            },
-            1500: {
-              slidesPerView: 3,
-            },
-          }}
           modules={[EffectCoverflow]}
           className="swiper_container"
         >
-          <SwiperSlide>
-            <Link
-              to={"/movies"}
-              style={{ color: "white", textDecoration: "none" }}
-            >
-              <img src={img1} />
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={img2} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={img3} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={img4} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={img3} />
-          </SwiperSlide>
+          {movies.map((movie) => {
+            return (
+              <SwiperSlide key={movie._id}>
+                <Link
+                  to={"/movies"}
+                  style={{ color: "white", textDecoration: "none" }}
+                >
+                  <img src={movie.posterUrl} alt={movie.title} />
+                </Link>
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </Box>
     </Box>

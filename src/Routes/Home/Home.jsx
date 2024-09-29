@@ -1,13 +1,37 @@
 import { Box, IconButton, Tooltip } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeroCarousel from "../../Components/HeroCarousel";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import { getAllMovies } from "../../api-calls/api-calls";
 
 import "./Home.css";
 
 const Home = () => {
   const [notification, setNotification] = useState(false);
+  const [topMovies, setTopMovies] = useState([]);
+
+  useEffect(() => {
+    let releasedMovies = [];
+    getAllMovies()
+      .then((data) => {
+        data.movies.map((movie) => {
+          if (!movie.bookingsOpen) releasedMovies.push(movie);
+        });
+
+        setTopMovies(
+          data.movies
+            .sort((a, b) => {
+              let aDate = new Date(a.releaseDate);
+              let bDate = new Date(b.releaseDate);
+
+              aDate - bDate;
+            })
+            .slice(0, 6)
+        );
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const notify = (
     <Tooltip title="Set Notification">
@@ -47,7 +71,7 @@ const Home = () => {
         paddingBottom={2}
         sx={{ bgcolor: "secondary.main" }}
       >
-        <HeroCarousel />
+        <HeroCarousel movies={topMovies} />
       </Box>
     </>
   );
