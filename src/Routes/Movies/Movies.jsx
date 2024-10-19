@@ -25,7 +25,9 @@ const Movies = () => {
   const [langOpen, setLangOpen] = useState(true);
   const [genreOpen, setGenreOpen] = useState(true);
   const [selectLangs, setSelectLangs] = useState([]);
+  const [selectGenre, setSelectGenre] = useState([]);
   const [defaultCheckMovies, setDefaultCheckMovies] = useState(true);
+  const [defaultCheckGenre, setDefaultCheckGenre] = useState(true);
 
   const handleClick = (value) => {
     if (value === "sort") setSortOpen(!sortOpen);
@@ -46,7 +48,7 @@ const Movies = () => {
       });
 
       setDisplayMovies(sorted);
-      console.log(movies);
+      setMovies(sorted);
     }
 
     if (value === "oldest") {
@@ -58,6 +60,7 @@ const Movies = () => {
       });
 
       setDisplayMovies(sorted);
+      setMovies(sorted);
     }
   };
 
@@ -69,13 +72,25 @@ const Movies = () => {
       langArray.push(event.target.value);
       setSelectLangs(langArray);
 
-      movies.map((movie) => {
-        langArray.map((lang) => {
-          if (lang === movie.language.toLowerCase()) {
-            moviesByLang.push(movie);
-          }
+      if (selectGenre.length !== 0) {
+        movies.map((movie) => {
+          langArray.map((lang) => {
+            selectGenre.map((genre) => {
+              if (lang === movie.language.toLowerCase()) {
+                moviesByLang.push(movie);
+              }
+            });
+          });
         });
-      });
+      } else {
+        movies.map((movie) => {
+          langArray.map((lang) => {
+            if (lang === movie.language.toLowerCase()) {
+              moviesByLang.push(movie);
+            }
+          });
+        });
+      }
 
       setDisplayMovies(moviesByLang);
     }
@@ -85,23 +100,133 @@ const Movies = () => {
 
       setSelectLangs(langArray);
 
-      movies.map((movie) => {
-        langArray.map((lang) => {
-          if (lang === movie.language.toLowerCase()) {
-            moviesByLang.push(movie);
-          }
+      if (selectGenre.length !== 0) {
+        movies.map((movie) => {
+          langArray.map((lang) => {
+            selectGenre.map((genre) => {
+              if (
+                lang === movie.language.toLowerCase() &&
+                genre === movie.genre.toLowerCase()
+              ) {
+                moviesByLang.push(movie);
+              }
+            });
+          });
         });
-      });
+      } else {
+        movies.map((movie) => {
+          langArray.map((lang) => {
+            if (lang === movie.language.toLowerCase()) {
+              moviesByLang.push(movie);
+            }
+          });
+        });
+      }
 
       setDisplayMovies(moviesByLang);
     }
 
     if (langArray.length === 0) {
       setDefaultCheckMovies(true);
-      setDisplayMovies(movies);
+
+      if (selectGenre.length !== 0) {
+        movies.map((movie) => {
+          selectGenre.map((genre) => {
+            if (genre === movie.genre.toLowerCase()) {
+              moviesByLang.push(movie);
+            }
+          });
+        });
+      } else {
+        setDisplayMovies(movies);
+      }
     }
 
     if (langArray.length !== 0) setDefaultCheckMovies(false);
+  };
+
+  const handleGenreSort = (event) => {
+    const genreArray = [...selectGenre];
+    let moviesByGenre = [];
+
+    if (event.target.checked) {
+      genreArray.push(event.target.value);
+      setSelectGenre(genreArray);
+
+      if (selectLangs.length !== 0) {
+        movies.map((movie) => {
+          genreArray.map((genre) => {
+            selectLangs.map((lang) => {
+              if (
+                lang === movie.language.toLowerCase() &&
+                genre === movie.genre.toLowerCase()
+              ) {
+                moviesByGenre.push(movie);
+              }
+            });
+          });
+        });
+      } else {
+        movies.map((movie) => {
+          genreArray.map((genre) => {
+            if (genre === movie.genre.toLowerCase()) {
+              moviesByGenre.push(movie);
+            }
+          });
+        });
+      }
+
+      setDisplayMovies(moviesByGenre);
+    }
+
+    if (!event.target.checked) {
+      genreArray.splice(genreArray.indexOf(event.target.value), 1);
+
+      setSelectGenre(genreArray);
+
+      if (selectLangs.length !== 0) {
+        movies.map((movie) => {
+          genreArray.map((genre) => {
+            selectLangs.map((lang) => {
+              if (
+                lang === movie.language.toLowerCase() &&
+                genre === movie.genre.toLowerCase()
+              ) {
+                moviesByGenre.push(movie);
+              }
+            });
+          });
+        });
+      } else {
+        movies.map((movie) => {
+          genreArray.map((genre) => {
+            if (genre === movie.genre.toLowerCase()) {
+              moviesByGenre.push(movie);
+            }
+          });
+        });
+      }
+
+      setDisplayMovies(moviesByGenre);
+    }
+
+    if (genreArray.length === 0) {
+      setDefaultCheckGenre(true);
+
+      if (selectLangs.length !== 0) {
+        movies.map((movie) => {
+          selectLangs.map((lang) => {
+            if (lang === movie.language.toLowerCase()) {
+              moviesByGenre.push(movie);
+            }
+          });
+        });
+      } else {
+        setDisplayMovies(movies);
+      }
+    }
+
+    if (genreArray.length !== 0) setDefaultCheckGenre(false);
   };
 
   useEffect(() => {
@@ -268,36 +393,42 @@ const Movies = () => {
           <Collapse in={genreOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItemButton sx={{ pl: 4 }}>
-                <FormGroup>
+                <FormGroup onClick={handleGenreSort}>
                   <FormControlLabel
                     sx={{ color: "primary.main" }}
+                    value="all"
+                    control={<Checkbox checked={defaultCheckGenre} disabled />}
+                    label="All"
+                  />
+                  <FormControlLabel
+                    sx={{ color: "primary.main" }}
+                    value="drama"
                     control={<Checkbox />}
                     label="Drama"
                   />
                   <FormControlLabel
                     sx={{ color: "primary.main" }}
+                    value="comedy"
                     control={<Checkbox />}
                     label="Comedy"
                   />
                   <FormControlLabel
                     sx={{ color: "primary.main" }}
+                    value="thriller"
                     control={<Checkbox />}
                     label="Thriller"
                   />
                   <FormControlLabel
                     sx={{ color: "primary.main" }}
+                    value="action"
                     control={<Checkbox />}
                     label="Action"
                   />
                   <FormControlLabel
                     sx={{ color: "primary.main" }}
+                    value="horror"
                     control={<Checkbox />}
                     label="Horror"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    control={<Checkbox />}
-                    label="Family"
                   />
                 </FormGroup>
               </ListItemButton>
