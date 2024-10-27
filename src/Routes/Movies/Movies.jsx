@@ -29,6 +29,19 @@ const Movies = () => {
   const [defaultCheckMovies, setDefaultCheckMovies] = useState(true);
   const [defaultCheckGenre, setDefaultCheckGenre] = useState(true);
 
+  const langOptions = [
+    "English",
+    "Hindi",
+    "Marathi",
+    "Gujarati",
+    "Punjabi",
+    "Bengali",
+    "Tamil",
+    "Telugu",
+    "Malayalam",
+  ];
+  const genreOptions = ["Drama", "Comedy", "Thriller", "Action", "Horror"];
+
   const handleClick = (value) => {
     if (value === "sort") setSortOpen(!sortOpen);
     if (value === "lang") setLangOpen(!langOpen);
@@ -39,67 +52,23 @@ const Movies = () => {
     const { value } = event.target;
     let sorted;
 
-    if (value === "newest") {
-      sorted = [...displayMovies].sort((a, b) => {
-        let aDate = new Date(a.releaseDate);
-        let bDate = new Date(b.releaseDate);
+    sorted = [...displayMovies].sort((a, b) => {
+      let aDate = new Date(a.releaseDate);
+      let bDate = new Date(b.releaseDate);
 
-        return bDate - aDate;
-      });
+      if (value === "newest") return bDate - aDate;
+      if (value === "oldest") return aDate - bDate;
+    });
 
-      setDisplayMovies(sorted);
-      setMovies(sorted);
-    }
-
-    if (value === "oldest") {
-      sorted = [...displayMovies].sort((a, b) => {
-        let aDate = new Date(a.releaseDate);
-        let bDate = new Date(b.releaseDate);
-
-        return aDate - bDate;
-      });
-
-      setDisplayMovies(sorted);
-      setMovies(sorted);
-    }
+    setDisplayMovies(sorted);
+    setMovies(sorted);
   };
 
   const handleLangSort = (event) => {
     const langArray = [...selectLangs];
     let moviesByLang = [];
 
-    if (event.target.checked) {
-      langArray.push(event.target.value);
-      setSelectLangs(langArray);
-
-      if (selectGenre.length !== 0) {
-        movies.map((movie) => {
-          langArray.map((lang) => {
-            selectGenre.map((genre) => {
-              if (lang === movie.language.toLowerCase()) {
-                moviesByLang.push(movie);
-              }
-            });
-          });
-        });
-      } else {
-        movies.map((movie) => {
-          langArray.map((lang) => {
-            if (lang === movie.language.toLowerCase()) {
-              moviesByLang.push(movie);
-            }
-          });
-        });
-      }
-
-      setDisplayMovies(moviesByLang);
-    }
-
-    if (!event.target.checked) {
-      langArray.splice(langArray.indexOf(event.target.value), 1);
-
-      setSelectLangs(langArray);
-
+    const langSort = () => {
       if (selectGenre.length !== 0) {
         movies.map((movie) => {
           langArray.map((lang) => {
@@ -122,7 +91,19 @@ const Movies = () => {
           });
         });
       }
+    };
 
+    if (event.target.checked) {
+      langArray.push(event.target.value);
+      setSelectLangs(langArray);
+      langSort();
+      setDisplayMovies(moviesByLang);
+    }
+
+    if (!event.target.checked) {
+      langArray.splice(langArray.indexOf(event.target.value), 1);
+      setSelectLangs(langArray);
+      langSort();
       setDisplayMovies(moviesByLang);
     }
 
@@ -149,10 +130,7 @@ const Movies = () => {
     const genreArray = [...selectGenre];
     let moviesByGenre = [];
 
-    if (event.target.checked) {
-      genreArray.push(event.target.value);
-      setSelectGenre(genreArray);
-
+    const genreSort = () => {
       if (selectLangs.length !== 0) {
         movies.map((movie) => {
           genreArray.map((genre) => {
@@ -175,38 +153,19 @@ const Movies = () => {
           });
         });
       }
+    };
 
+    if (event.target.checked) {
+      genreArray.push(event.target.value);
+      setSelectGenre(genreArray);
+      genreSort();
       setDisplayMovies(moviesByGenre);
     }
 
     if (!event.target.checked) {
       genreArray.splice(genreArray.indexOf(event.target.value), 1);
-
       setSelectGenre(genreArray);
-
-      if (selectLangs.length !== 0) {
-        movies.map((movie) => {
-          genreArray.map((genre) => {
-            selectLangs.map((lang) => {
-              if (
-                lang === movie.language.toLowerCase() &&
-                genre === movie.genre.toLowerCase()
-              ) {
-                moviesByGenre.push(movie);
-              }
-            });
-          });
-        });
-      } else {
-        movies.map((movie) => {
-          genreArray.map((genre) => {
-            if (genre === movie.genre.toLowerCase()) {
-              moviesByGenre.push(movie);
-            }
-          });
-        });
-      }
-
+      genreSort();
       setDisplayMovies(moviesByGenre);
     }
 
@@ -323,60 +282,16 @@ const Movies = () => {
                     control={<Checkbox checked={defaultCheckMovies} disabled />}
                     label="All"
                   />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="english"
-                    control={<Checkbox />}
-                    label="English"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="hindi"
-                    control={<Checkbox />}
-                    label="Hindi"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="marathi"
-                    control={<Checkbox />}
-                    label="Marathi"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="gujarati"
-                    control={<Checkbox />}
-                    label="Gujarati"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="punjabi"
-                    control={<Checkbox />}
-                    label="Punjabi"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="bengali"
-                    control={<Checkbox />}
-                    label="Bengali"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="tamil"
-                    control={<Checkbox />}
-                    label="Tamil"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="telugu"
-                    control={<Checkbox />}
-                    label="Telugu"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="malayalam"
-                    control={<Checkbox />}
-                    label="Malayalam"
-                  />
+                  {langOptions.map((lang, idx) => {
+                    return (
+                      <FormControlLabel
+                        sx={{ color: "primary.main" }}
+                        value={lang.toLowerCase()}
+                        control={<Checkbox />}
+                        label={lang}
+                      />
+                    );
+                  })}
                 </FormGroup>
               </ListItemButton>
             </List>
@@ -400,36 +315,16 @@ const Movies = () => {
                     control={<Checkbox checked={defaultCheckGenre} disabled />}
                     label="All"
                   />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="drama"
-                    control={<Checkbox />}
-                    label="Drama"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="comedy"
-                    control={<Checkbox />}
-                    label="Comedy"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="thriller"
-                    control={<Checkbox />}
-                    label="Thriller"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="action"
-                    control={<Checkbox />}
-                    label="Action"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="horror"
-                    control={<Checkbox />}
-                    label="Horror"
-                  />
+                  {genreOptions.map((genre, idx) => {
+                    return (
+                      <FormControlLabel
+                        sx={{ color: "primary.main" }}
+                        value={genre.toLowerCase()}
+                        control={<Checkbox />}
+                        label={genre}
+                      />
+                    );
+                  })}
                 </FormGroup>
               </ListItemButton>
             </List>

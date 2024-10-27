@@ -1,6 +1,6 @@
 import { Box, IconButton, Tooltip } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import HeroCarousel from "../../Components/HeroCarousel";
+import HomeCarousel from "../../Components/HomeCarousel/HomeCarousel";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { getAllMovies } from "../../api-calls/api-calls";
@@ -71,7 +71,7 @@ const Home = () => {
         paddingBottom={2}
         sx={{ bgcolor: "secondary.main" }}
       >
-        <HeroCarousel movies={topMovies} />
+        <HomeCarousel movies={topMovies} />
       </Box>
     </>
   );
