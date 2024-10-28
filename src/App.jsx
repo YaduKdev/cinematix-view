@@ -7,6 +7,7 @@ import Admin from "./Routes/Admin/Admin";
 import Auth from "./Routes/Auth/Auth";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
+import { useSelector } from "react-redux";
 
 const theme = createTheme({
   colorSchemes: {
@@ -34,6 +35,12 @@ const theme = createTheme({
 });
 
 function App() {
+  const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
+  const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  console.log("isAdminLoggedIn", isAdminLoggedIn);
+  console.log("isUserLoggedIn", isUserLoggedIn);
+
   return (
     <>
       <ThemeProvider theme={theme}>

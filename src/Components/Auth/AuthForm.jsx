@@ -10,8 +10,26 @@ import {
 } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-const AuthForm = () => {
+const AuthForm = ({ onSubmit, isAdmin }) => {
+  const [inputs, setInputs] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [isSignUp, setIsSignUp] = useState(false);
+
+  const handleFormChange = (e) => {
+    setInputs((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({ inputs, signup: isAdmin ? false : isSignUp });
+  };
+
   return (
     <Dialog open={true}>
       <Box sx={{ ml: "auto", padding: 1 }}>
@@ -22,7 +40,7 @@ const AuthForm = () => {
       <Typography variant="h4" sx={{ mt: 2 }} textAlign={"center"}>
         {isSignUp ? "SIGN UP" : "LOGIN"}
       </Typography>
-      <form>
+      <form onSubmit={handleFormSubmit}>
         <Box
           padding={6}
           display={"flex"}
@@ -32,9 +50,11 @@ const AuthForm = () => {
           margin="auto"
           alignItems={"center"}
         >
-          {isSignUp ? (
+          {!isAdmin && isSignUp ? (
             <TextField
               type={"text"}
+              value={inputs.name}
+              onChange={handleFormChange}
               name="name"
               margin="normal"
               id="outlined-basic"
@@ -45,6 +65,8 @@ const AuthForm = () => {
           ) : null}
           <TextField
             type={"email"}
+            value={inputs.email}
+            onChange={handleFormChange}
             name="email"
             margin="normal"
             id="outlined-basic"
@@ -54,6 +76,8 @@ const AuthForm = () => {
           />
           <TextField
             type={"password"}
+            value={inputs.password}
+            onChange={handleFormChange}
             name="password"
             margin="normal"
             sx={{ width: 320 }}
@@ -70,20 +94,15 @@ const AuthForm = () => {
           >
             {isSignUp ? "SIGN UP" : "LOGIN"}
           </Button>
-          <Button
-            onClick={() => setIsSignUp(!isSignUp)}
-            sx={{ mt: 2 }}
-            size="small"
-          >
-            {isSignUp ? "Back To Login" : "Create New Account"}
-          </Button>
-          {/* <FormLabel sx={{ mt: 1, mb: 1 }}>Password</FormLabel>
-          <TextField
-            margin="normal"
-            variant="standard"
-            type={"password"}
-            name="password"
-          /> */}
+          {!isAdmin && (
+            <Button
+              onClick={() => setIsSignUp(!isSignUp)}
+              sx={{ mt: 2 }}
+              size="small"
+            >
+              {isSignUp ? "Back To Login" : "Create New Account"}
+            </Button>
+          )}
         </Box>
       </form>
     </Dialog>
