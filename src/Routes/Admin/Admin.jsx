@@ -7,12 +7,18 @@ import { adminActions } from "../../store";
 const Admin = () => {
   const dispatch = useDispatch();
 
+  const onResRecieved = (data) => {
+    console.log(data);
+    dispatch(adminActions.login());
+    localStorage.setItem("adminID", data.id);
+    localStorage.setItem("token", data.token);
+  };
+
   const getData = (data) => {
     console.log("Admin", data);
 
     sendAdminAuthRequest(data.inputs)
-      .then((res) => console.log(res))
-      .then(() => dispatch(adminActions.login()))
+      .then(onResRecieved)
       .catch((err) => console.log(err));
   };
 

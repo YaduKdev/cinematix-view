@@ -7,12 +7,17 @@ import { userActions } from "../../store";
 const Auth = () => {
   const dispatch = useDispatch();
 
+  const onResRecieved = (data) => {
+    console.log("onResRecieved=>", data);
+    dispatch(userActions.login());
+    localStorage.setItem("userID", data.id);
+  };
+
   const getData = (data) => {
     console.log("Auth", data);
 
     sendUserAuthRequest(data.inputs, data.signup)
-      .then((res) => console.log("This is response from backend", res))
-      .then(() => dispatch(userActions.login()))
+      .then(onResRecieved)
       .catch((err) => console.log(err));
   };
 

@@ -7,7 +7,9 @@ import Admin from "./Routes/Admin/Admin";
 import Auth from "./Routes/Auth/Auth";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { adminActions, userActions } from "./store";
 
 const theme = createTheme({
   colorSchemes: {
@@ -37,9 +39,18 @@ const theme = createTheme({
 function App() {
   const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const dispatch = useDispatch();
 
   console.log("isAdminLoggedIn", isAdminLoggedIn);
   console.log("isUserLoggedIn", isUserLoggedIn);
+
+  useEffect(() => {
+    if (localStorage.getItem("userID")) {
+      dispatch(userActions.login());
+    } else if (localStorage.getItem("adminID")) {
+      dispatch(adminActions.login());
+    }
+  }, []);
 
   return (
     <>
