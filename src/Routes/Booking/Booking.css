@@ -1,0 +1,69 @@
+.booking-container {
+  padding: 50px 30px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.movie-container {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.movie-info-primary {
+  display: flex;
+  width: 600px;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 10px 10px;
+}
+
+.movie-title {
+  background-color: #bd1616;
+  padding: 15px;
+  margin-right: 20px;
+  width: 580px;
+  align-self: center;
+  justify-self: center;
+}
+
+.movie-pic {
+  max-width: 90%;
+  padding: 20px 20px 10px;
+}
+
+.movie-actors {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.actor-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.actor-img {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.actor-pic {
+  max-width: 114.75px;
+}
+
+.movie-booking-button {
+  margin-top: 30px;
+}
+
+.movie-rlg {
+  padding-left: 20px;
+  background: rgba(0, 10, 14, 0.2);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

@@ -63,7 +63,7 @@ const HomeCarousel = ({ movies }) => {
             return (
               <SwiperSlide key={movie._id}>
                 <Link
-                  to={"/movies"}
+                  to={`/booking/${movie._id}`}
                   style={{ color: "white", textDecoration: "none" }}
                 >
                   <img src={movie.posterUrl} alt={movie.title} />

@@ -17,6 +17,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { Checkbox } from "@mui/material";
 import "./Movies.css";
+import { Link } from "react-router-dom";
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
@@ -334,10 +335,12 @@ const Movies = () => {
       <Box sx={{ bgcolor: "secondary.main" }} className="preview-container">
         {displayMovies.map((movie) => {
           return (
-            <div
-              className="preview"
-              style={{ backgroundImage: `url(${movie.posterUrl})` }}
-            ></div>
+            <Link to={`/booking/${movie._id}`}>
+              <div
+                className="preview"
+                style={{ backgroundImage: `url(${movie.posterUrl})` }}
+              ></div>
+            </Link>
           );
         })}
       </Box>

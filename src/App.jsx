@@ -10,6 +10,7 @@ import { grey, red } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { adminActions, userActions } from "./store";
+import Booking from "./Routes/Booking/Booking";
 
 const theme = createTheme({
   colorSchemes: {
@@ -62,6 +63,7 @@ function App() {
             <Route path="/movies" element={<Movies />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/booking/:id" element={<Booking />} />
           </Routes>
         </section>
       </ThemeProvider>
