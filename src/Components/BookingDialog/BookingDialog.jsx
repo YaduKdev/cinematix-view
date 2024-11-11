@@ -22,7 +22,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import dayjs from "dayjs";
-
+import { loadStripe } from "@stripe/stripe-js";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import ChairIcon from "@mui/icons-material/Chair";
 import WeekendIcon from "@mui/icons-material/Weekend";
@@ -80,6 +80,8 @@ const BookingDialog = ({ open, handleClose, movie }) => {
   const [showTime, setShowTime] = useState();
   const [openDate, setOpenDate] = useState(false);
   const [bookedSeats, setBookedSeats] = useState([]);
+  const [totalSeats, setTotalSeats] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const setCurrentCity = (event) => {
     const { value } = event.target;
@@ -110,12 +112,69 @@ const BookingDialog = ({ open, handleClose, movie }) => {
     if (checked) {
       seatsArray.push(value);
       setBookedSeats(seatsArray);
+      setTotalSeats(seatsArray.length);
+
+      if (value.includes("P")) {
+        setTotalAmount(totalAmount + 600);
+      } else if (value.includes("G")) {
+        setTotalAmount(totalAmount + 450);
+      } else if (value.includes("R")) {
+        setTotalAmount(totalAmount + 250);
+      }
     }
 
     if (!checked) {
       seatsArray.splice(seatsArray.indexOf(value), 1);
       setBookedSeats(seatsArray);
+      setTotalSeats(seatsArray.length);
+
+      if (value.includes("P")) {
+        setTotalAmount(totalAmount - 600);
+      } else if (value.includes("G")) {
+        setTotalAmount(totalAmount - 450);
+      } else if (value.includes("R")) {
+        setTotalAmount(totalAmount - 250);
+      }
     }
+  };
+
+  const makePayment = async () => {
+    const stripe = await loadStripe(
+      "pk_test_51JLbgaSDLb6EOYBqYzzmiienh5vzYqc6VCqo9Ys96jYZKiiqZpWpTw4MQAmcjm2FLHWY3Z8aNMmEq01GdwuHOBSg007HL0ibCC"
+    );
+
+    const body = {
+      seats: {
+        bookedSeats: bookedSeats,
+        totalSeats: totalSeats,
+        totalAmount: totalAmount,
+      },
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    const response = await fetch(
+      "http://localhost:5000/booking/create-checkout-session",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body),
+      }
+    );
+
+    const session = await response.json();
+
+    const result = stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+
+    if (result.error) {
+      console.log(result.error);
+    }
+
+    // handleNext();
   };
 
   const handleBack = () => {
@@ -353,7 +412,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                     flexDirection={"column"}
                     justifyContent={"center"}
                     alignItems={"center"}
-                    marginTop={3}
+                    marginTop={1}
                   >
                     <Box
                       display={"flex"}
@@ -403,7 +462,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                         }}
                         onChange={seatBookingHandler}
                       >
-                        <Divider sx={{ width: "100%", mt: "15px", mb: "15px" }}>
+                        <Divider sx={{ width: "100%", mt: "10px", mb: "10px" }}>
                           <Typography variant="body1" sx={{ color: "#F44336" }}>
                             REGULAR
                           </Typography>
@@ -434,7 +493,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                           if (index + 1 === 25) {
                             return (
                               <Divider
-                                sx={{ width: "100%", mt: "15px", mb: "15px" }}
+                                sx={{ width: "100%", mt: "10px", mb: "10px" }}
                               >
                                 <Typography
                                   variant="body1"
@@ -474,7 +533,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                           if (index + 1 === 42) {
                             return (
                               <Divider
-                                sx={{ width: "100%", mt: "15px", mb: "15px" }}
+                                sx={{ width: "100%", mt: "10px", mb: "10px" }}
                               >
                                 <Typography
                                   variant="body1"
@@ -511,6 +570,23 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                         })}
                       </FormGroup>
                     </Box>
+                    <Box
+                      display={"flex"}
+                      justifyContent={"space-between"}
+                      width={"100%"}
+                      marginTop={2}
+                      // marginBottom={1}
+                    >
+                      <Typography variant="h6" fontWeight="bold">
+                        No. of Seats: {totalSeats}
+                      </Typography>
+                      <Typography variant="h6" fontWeight="bold">
+                        Amount Payable:{" "}
+                        <span style={{ color: "#85BB65" }}>
+                          Rs.{totalAmount}
+                        </span>
+                      </Typography>
+                    </Box>
                   </Box>
                 )}
                 {activeStep === 4 && (
@@ -537,7 +613,13 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                   ) : activeStep === 2 && date && showTime ? (
                     <Button onClick={handleNext}>Next</Button>
                   ) : activeStep === 3 && bookedSeats.length !== 0 ? (
-                    <Button onClick={handleNext}>Next</Button>
+                    <Button
+                      onClick={makePayment}
+                      variant="contained"
+                      color="warning"
+                    >
+                      Continue To Payment
+                    </Button>
                   ) : null}
                 </Box>
               </React.Fragment>
