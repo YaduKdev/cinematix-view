@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { adminActions, userActions } from "./store";
 import Booking from "./Routes/Booking/Booking";
+import BookingSuccess from "./Routes/BookingStatus/BookingSuccess";
+import BookingFail from "./Routes/BookingStatus/BookingFail";
 
 const theme = createTheme({
   colorSchemes: {
@@ -64,6 +66,11 @@ function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/booking/:id" element={<Booking />} />
+            <Route
+              path="/booking/transaction-success"
+              element={<BookingSuccess />}
+            />
+            <Route path="/booking/transaction-fail" element={<BookingFail />} />
           </Routes>
         </section>
       </ThemeProvider>

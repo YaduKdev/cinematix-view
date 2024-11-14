@@ -2,20 +2,42 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieById } from "../../api-calls/api-calls";
 import { Box, Button, Typography } from "@mui/material";
-
+import { Link } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import "./Booking.css";
 import BookingDialog from "../../Components/BookingDialog/BookingDialog";
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
 
 const Booking = () => {
   const id = useParams().id;
   const [movie, setMovie] = useState();
   const [open, setOpen] = useState(false);
+  const [noUserOpen, setNoUserOpen] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (!localStorage.getItem("userID")) {
+      setNoUserOpen(true);
+    } else {
+      setOpen(true);
+    }
   };
   const handleClose = () => {
     setOpen(false);
+    setNoUserOpen(false);
   };
 
   useEffect(() => {
@@ -124,6 +146,45 @@ const Booking = () => {
       )}
       {open && (
         <BookingDialog open={open} handleClose={handleClose} movie={movie} />
+      )}
+      {noUserOpen && (
+        <BootstrapDialog
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={noUserOpen}
+        >
+          <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+            Login To Continue
+          </DialogTitle>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={(theme) => ({
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: theme.palette.grey[500],
+            })}
+          >
+            <CloseIcon />
+          </IconButton>
+          <DialogContent dividers>
+            <Typography gutterBottom>
+              You need to be logged in to book tickets.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="outlined"
+              color="primary"
+              autoFocus
+              LinkComponent={Link}
+              to="/auth"
+            >
+              Login
+            </Button>
+          </DialogActions>
+        </BootstrapDialog>
       )}
     </Box>
   );

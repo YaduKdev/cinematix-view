@@ -53,3 +53,27 @@ export const getMovieById = async (id) => {
 
   return data;
 };
+
+export const createBooking = async (bookingData) => {
+  const res = await axios
+    .post("/booking/", { ...bookingData })
+    .catch((err) => console.log(err));
+
+  if (res.status !== 201) return console.log("Could Not Create Booking");
+
+  const data = await res.data;
+
+  return data;
+};
+
+export const getBookingData = async (bookingID) => {
+  const res = await axios
+    .get(`/booking/${bookingID}/`)
+    .catch((err) => console.log(err));
+
+  if (res.status !== 200) return console.log("Could Not Fetch Booking");
+
+  const data = await res.data;
+
+  return data;
+};

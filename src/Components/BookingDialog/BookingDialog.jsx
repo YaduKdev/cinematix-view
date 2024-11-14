@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
@@ -28,6 +28,7 @@ import ChairIcon from "@mui/icons-material/Chair";
 import WeekendIcon from "@mui/icons-material/Weekend";
 
 import "./BookingDialog.css";
+import { getBookingData } from "../../api-calls/api-calls";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -82,6 +83,8 @@ const BookingDialog = ({ open, handleClose, movie }) => {
   const [bookedSeats, setBookedSeats] = useState([]);
   const [totalSeats, setTotalSeats] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [bookingsData, setBookingsData] = useState([]);
+  const [showSeats, setShowSeats] = useState(false);
 
   const setCurrentCity = (event) => {
     const { value } = event.target;
@@ -89,7 +92,6 @@ const BookingDialog = ({ open, handleClose, movie }) => {
     let currentCity = value;
 
     setCity(currentCity);
-    console.log("CURRENT CITY", currentCity);
   };
 
   const setCurrentCinema = (event) => {
@@ -98,10 +100,43 @@ const BookingDialog = ({ open, handleClose, movie }) => {
     let currentCinema = value;
 
     setCinema(currentCinema);
-    console.log("CURRENT CINEMA", currentCinema);
   };
 
+  useEffect(() => {
+    console.log(
+      "BOOKINGSDATAonupdate+++++++++++++++++++-------+++++++++",
+      bookingsData
+    );
+  }, [bookingsData]);
+
   const handleNext = () => {
+    if (activeStep === 2) {
+      let bookings = [];
+      console.log("BOOKINGSDATAprev==========", bookingsData);
+
+      movie.bookings.map((booking) => {
+        getBookingData(booking).then((res) => {
+          if (
+            res.booking.movieTheater.location === city &&
+            res.booking.movieTheater.name === cinema &&
+            res.booking.movieTheater.date ===
+              new Date(date).toLocaleDateString() &&
+            res.booking.movieTheater.time === showTime
+          ) {
+            res.booking.movieTheater.seatNumbers.map((seat) => {
+              bookings.push(seat);
+            });
+          }
+        });
+      });
+
+      setBookingsData(bookings);
+
+      console.log("BOOKINGS===========", bookings);
+      console.log("BOOKINGSDATAafter=========", bookingsData);
+
+      // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -145,6 +180,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
 
     const body = {
       seats: {
+        movie: movie.title,
         bookedSeats: bookedSeats,
         totalSeats: totalSeats,
         totalAmount: totalAmount,
@@ -154,6 +190,13 @@ const BookingDialog = ({ open, handleClose, movie }) => {
     const headers = {
       "Content-Type": "application/json",
     };
+
+    localStorage.setItem("movie", movie._id);
+    localStorage.setItem("cinema", cinema);
+    localStorage.setItem("city", city);
+    localStorage.setItem("seatNumbers", JSON.stringify(bookedSeats));
+    localStorage.setItem("bookingDate", new Date(date).toLocaleDateString());
+    localStorage.setItem("showTime", showTime);
 
     const response = await fetch(
       "http://localhost:5000/booking/create-checkout-session",
@@ -170,6 +213,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
       sessionId: session.id,
     });
 
+    console.log(result);
     if (result.error) {
       console.log(result.error);
     }
@@ -185,22 +229,33 @@ const BookingDialog = ({ open, handleClose, movie }) => {
       setDate();
       setShowTime();
       setBookedSeats([]);
+      setTotalAmount(0);
+      setTotalSeats(0);
+      setShowSeats(false);
     }
     if (activeStep === 2) {
       setCinema();
       setDate();
       setShowTime();
       setBookedSeats([]);
+      setTotalAmount(0);
+      setTotalSeats(0);
+      setShowSeats(false);
     }
 
     if (activeStep === 3) {
       setDate();
       setShowTime();
       setBookedSeats([]);
+      setTotalAmount(0);
+      setTotalSeats(0);
+      setShowSeats(false);
     }
 
     if (activeStep === 4) {
       setBookedSeats([]);
+      setTotalAmount(0);
+      setTotalSeats(0);
     }
   };
 
@@ -314,7 +369,6 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                       >
                         {movie.nowPlaying.map((cinema) => {
                           if (cinema.location === city) {
-                            console.log("CINE NAME", cinema.name[0]);
                             return (
                               <FormControlLabel
                                 value={cinema.name[0]}
@@ -406,7 +460,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                     )}
                   </Box>
                 )}
-                {activeStep === 3 && (
+                {activeStep === 3 && showSeats ? (
                   <Box
                     display={"flex"}
                     flexDirection={"column"}
@@ -472,22 +526,43 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                         </Divider>
                         {Array.from({ length: 50 }, (_, index) => {
                           if (index + 1 <= 24) {
-                            return (
-                              <FormControlLabel
-                                key={index}
-                                labelPlacement="bottom"
-                                label={`R-${index + 1}`}
-                                value={`R-${index + 1}`}
-                                control={
-                                  <Checkbox
-                                    icon={<EventSeatIcon color="error" />}
-                                    checkedIcon={
-                                      <EventSeatIcon color="warning" />
-                                    }
-                                  />
-                                }
-                              />
-                            );
+                            if (bookingsData.indexOf(`R-${index + 1}`) >= 0) {
+                              return (
+                                <FormControlLabel
+                                  key={index}
+                                  labelPlacement="bottom"
+                                  label={`R-${index + 1}`}
+                                  value={`R-${index + 1}`}
+                                  control={
+                                    <Checkbox
+                                      disabled
+                                      icon={
+                                        <EventSeatIcon
+                                          sx={{ color: "#9F9F9F" }}
+                                        />
+                                      }
+                                    />
+                                  }
+                                />
+                              );
+                            } else {
+                              return (
+                                <FormControlLabel
+                                  key={index}
+                                  labelPlacement="bottom"
+                                  label={`R-${index + 1}`}
+                                  value={`R-${index + 1}`}
+                                  control={
+                                    <Checkbox
+                                      icon={<EventSeatIcon color="error" />}
+                                      checkedIcon={
+                                        <EventSeatIcon color="warning" />
+                                      }
+                                    />
+                                  }
+                                />
+                              );
+                            }
                           }
 
                           if (index + 1 === 25) {
@@ -512,22 +587,45 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                           }
 
                           if (index + 1 > 24 && index + 1 <= 41) {
-                            return (
-                              <FormControlLabel
-                                key={index}
-                                labelPlacement="bottom"
-                                label={`G-${index - 25 + 1}`}
-                                value={`G-${index - 25 + 1}`}
-                                control={
-                                  <Checkbox
-                                    icon={<WeekendIcon color="error" />}
-                                    checkedIcon={
-                                      <WeekendIcon color="warning" />
-                                    }
-                                  />
-                                }
-                              />
-                            );
+                            if (
+                              bookingsData.indexOf(`G-${index - 25 + 1}`) >= 0
+                            ) {
+                              return (
+                                <FormControlLabel
+                                  key={index}
+                                  labelPlacement="bottom"
+                                  label={`G-${index - 25 + 1}`}
+                                  value={`G-${index - 25 + 1}`}
+                                  control={
+                                    <Checkbox
+                                      disabled
+                                      icon={
+                                        <WeekendIcon
+                                          sx={{ color: "#9F9F9F" }}
+                                        />
+                                      }
+                                    />
+                                  }
+                                />
+                              );
+                            } else {
+                              return (
+                                <FormControlLabel
+                                  key={index}
+                                  labelPlacement="bottom"
+                                  label={`G-${index - 25 + 1}`}
+                                  value={`G-${index - 25 + 1}`}
+                                  control={
+                                    <Checkbox
+                                      icon={<WeekendIcon color="error" />}
+                                      checkedIcon={
+                                        <WeekendIcon color="warning" />
+                                      }
+                                    />
+                                  }
+                                />
+                              );
+                            }
                           }
 
                           if (index + 1 === 42) {
@@ -552,20 +650,43 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                           }
 
                           if (index + 1 > 40) {
-                            return (
-                              <FormControlLabel
-                                key={index}
-                                labelPlacement="bottom"
-                                label={`P-${index - 42 + 1}`}
-                                value={`P-${index - 42 + 1}`}
-                                control={
-                                  <Checkbox
-                                    icon={<ChairIcon color="error" />}
-                                    checkedIcon={<ChairIcon color="warning" />}
-                                  />
-                                }
-                              />
-                            );
+                            if (
+                              bookingsData.indexOf(`P-${index - 42 + 1}`) >= 0
+                            ) {
+                              return (
+                                <FormControlLabel
+                                  key={index}
+                                  labelPlacement="bottom"
+                                  label={`P-${index - 42 + 1}`}
+                                  value={`P-${index - 42 + 1}`}
+                                  control={
+                                    <Checkbox
+                                      disabled
+                                      icon={
+                                        <ChairIcon sx={{ color: "#9F9F9F" }} />
+                                      }
+                                    />
+                                  }
+                                />
+                              );
+                            } else {
+                              return (
+                                <FormControlLabel
+                                  key={index}
+                                  labelPlacement="bottom"
+                                  label={`P-${index - 42 + 1}`}
+                                  value={`P-${index - 42 + 1}`}
+                                  control={
+                                    <Checkbox
+                                      icon={<ChairIcon color="error" />}
+                                      checkedIcon={
+                                        <ChairIcon color="warning" />
+                                      }
+                                    />
+                                  }
+                                />
+                              );
+                            }
                           }
                         })}
                       </FormGroup>
@@ -588,6 +709,24 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                       </Typography>
                     </Box>
                   </Box>
+                ) : (
+                  activeStep === 3 && (
+                    <Box
+                      marginTop={5}
+                      marginBottom={3}
+                      display={"flex"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <Button
+                        onClick={() => setShowSeats(true)}
+                        variant="outlined"
+                        size="large"
+                      >
+                        SHOW SEATS
+                      </Button>
+                    </Box>
+                  )
                 )}
                 {activeStep === 4 && (
                   <Typography sx={{ mt: 2, mb: 1 }}>
