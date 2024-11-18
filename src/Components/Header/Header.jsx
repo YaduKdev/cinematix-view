@@ -24,6 +24,7 @@ const Header = () => {
   const [movies, setMovies] = useState([]);
 
   const logout = (isAdmin) => {
+    setPageValue(false);
     dispatch(isAdmin ? adminActions.logout() : userActions.logout());
   };
 
@@ -33,6 +34,12 @@ const Header = () => {
     } else if (window.location.pathname === "/admin") {
       setPageValue(1);
     } else if (window.location.pathname === "/auth") {
+      setPageValue(2);
+    } else if (window.location.pathname === "/user") {
+      setPageValue(1);
+    } else if (window.location.pathname === "/add") {
+      setPageValue(1);
+    } else if (window.location.pathname === "/admin") {
       setPageValue(2);
     } else if (window.location.pathname === "/") {
       setPageValue(false);
@@ -103,7 +110,12 @@ const Header = () => {
             )}
             {isUserLoggedIn && (
               <>
-                <Tab LinkComponent={Link} to="/user" label="Profile" />
+                <Tab
+                  LinkComponent={Link}
+                  onClick={() => setPageValue(1)}
+                  to="/user"
+                  label="Profile"
+                />
                 <Tab
                   onClick={() => logout(false)}
                   LinkComponent={Link}
@@ -114,7 +126,12 @@ const Header = () => {
             )}
             {isAdminLoggedIn && (
               <>
-                <Tab LinkComponent={Link} to="/add" label="Add Movie" />
+                <Tab
+                  LinkComponent={Link}
+                  to="/add"
+                  onClick={() => setPageValue(1)}
+                  label="Add Movie"
+                />
                 <Tab LinkComponent={Link} to="/admin" label="Profile" />
                 <Tab
                   onClick={() => logout(true)}

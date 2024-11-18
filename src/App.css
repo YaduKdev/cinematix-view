@@ -42,3 +42,9 @@ body {
 .logo {
   max-width: 48px;
 }
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}

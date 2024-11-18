@@ -77,3 +77,51 @@ export const getBookingData = async (bookingID) => {
 
   return data;
 };
+
+export const getUserBooking = async () => {
+  const id = localStorage.getItem("userID");
+
+  const res = await axios
+    .get(`/user/bookings/${id}/`)
+    .catch((err) => console.log(err));
+
+  if (res.status !== 200) return console.log("Unexpected Error");
+
+  const data = await res.data;
+
+  return data;
+};
+
+export const getUserDetails = async () => {
+  const id = localStorage.getItem("userID");
+
+  const res = await axios.get(`/user/${id}/`).catch((err) => console.log(err));
+
+  if (res.status !== 200) return console.log("Unexpected Error");
+
+  const data = await res.data;
+
+  return data;
+};
+
+export const getMovieDetails = async (id) => {
+  const res = await axios.get(`/movie/${id}/`).catch((err) => console.log(err));
+
+  if (res.status !== 200) return console.log("Unexpected Error");
+
+  const data = await res.data;
+
+  return data;
+};
+
+export const deleteBooking = async (id) => {
+  const res = await axios
+    .delete(`/booking/${id}`)
+    .catch((err) => console.log(err));
+
+  if (res.status !== 200) return console.log("Could Not Delete Movie");
+
+  const data = await res.data;
+
+  return data;
+};

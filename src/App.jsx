@@ -13,6 +13,8 @@ import { adminActions, userActions } from "./store";
 import Booking from "./Routes/Booking/Booking";
 import BookingSuccess from "./Routes/BookingStatus/BookingSuccess";
 import BookingFail from "./Routes/BookingStatus/BookingFail";
+import UserProfile from "./Routes/UserProfile/UserProfile";
+import AddMovie from "./Routes/AddMovie/AddMovie";
 
 const theme = createTheme({
   colorSchemes: {
@@ -64,8 +66,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/add" element={<AddMovie />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/booking/:id" element={<Booking />} />
+            <Route path="/user" element={<UserProfile />} />
             <Route
               path="/booking/transaction-success"
               element={<BookingSuccess />}

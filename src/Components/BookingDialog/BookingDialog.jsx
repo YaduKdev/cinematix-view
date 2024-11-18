@@ -86,6 +86,8 @@ const BookingDialog = ({ open, handleClose, movie }) => {
   const [bookingsData, setBookingsData] = useState([]);
   const [showSeats, setShowSeats] = useState(false);
 
+  console.log("MOVIE============", movie);
+
   const setCurrentCity = (event) => {
     const { value } = event.target;
 
@@ -197,6 +199,8 @@ const BookingDialog = ({ open, handleClose, movie }) => {
     localStorage.setItem("seatNumbers", JSON.stringify(bookedSeats));
     localStorage.setItem("bookingDate", new Date(date).toLocaleDateString());
     localStorage.setItem("showTime", showTime);
+    localStorage.setItem("moviePoster", movie.posterUrl);
+    localStorage.setItem("movieTitle", movie.title);
 
     const response = await fetch(
       "http://localhost:5000/booking/create-checkout-session",

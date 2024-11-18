@@ -8,6 +8,8 @@ const BookingFail = () => {
     localStorage.removeItem("seatNumbers");
     localStorage.removeItem("bookingDate");
     localStorage.removeItem("showTime");
+    localStorage.removeItem("moviePoster");
+    localStorage.removeItem("movieTitle");
   }, []);
 
   return <div>Booking has Failed</div>;

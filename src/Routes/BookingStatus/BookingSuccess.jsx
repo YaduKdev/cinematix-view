@@ -21,6 +21,8 @@ const BookingSuccess = () => {
         seatNumbers: JSON.parse(localStorage.getItem("seatNumbers")),
         date: localStorage.getItem("bookingDate"),
         time: localStorage.getItem("showTime"),
+        poster: localStorage.getItem("moviePoster"),
+        movieName: localStorage.getItem("movieTitle"),
       },
       user: localStorage.getItem("userID"),
       sessionId,
@@ -34,6 +36,8 @@ const BookingSuccess = () => {
       localStorage.removeItem("seatNumbers");
       localStorage.removeItem("bookingDate");
       localStorage.removeItem("showTime");
+      localStorage.removeItem("moviePoster");
+      localStorage.removeItem("movieTitle");
     });
   }, []);
 
