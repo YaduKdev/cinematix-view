@@ -4,8 +4,10 @@ import "./AddMovie.css";
 import {
   Box,
   Button,
+  Chip,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   Radio,
   RadioGroup,
@@ -90,6 +92,38 @@ const AddMovie = () => {
     name: "",
     location: "",
   });
+  const [errors, setErrors] = useState({
+    title: false,
+    description: false,
+    rating: false,
+    language: false,
+    genre: false,
+    releaseDate: false,
+    posterUrl: false,
+    actors: false,
+    actorName: false,
+    actorImg: false,
+    cinema: false,
+    cinemaName: false,
+    cinemaLocation: false,
+  });
+  const [errorTexts, setErrorTexts] = useState({
+    title: "Add a title for the movie.",
+    description: "Add a description for the movie.",
+    rating: "Select a rating for the movie.",
+    language: "Select a language for the movie.",
+    genre: "Select a genre for the movie.",
+    releaseDate: "Add a release date for the movie.",
+    posterUrl: "Add a poster URL for the movie.",
+    actors: "Add at least one actor for the movie.",
+    actorName: "Add a name for actor.",
+    actorImg: "Add an image URL for actor.",
+    cinema: "Add at least one cinema for the movie",
+    cinemaName: "Add a name for cinema.",
+    cinemaLocation: "Add a location for cinema.",
+  });
+  const [actorInputs, setActorInputs] = useState(false);
+  const [cinemaInputs, setCinemaInputs] = useState(false);
 
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -98,11 +132,166 @@ const AddMovie = () => {
     }));
   };
 
+  const addCinema = () => {
+    if (
+      (cinema.name !== "" || cinema.name.length) &&
+      (cinema.location !== "" || cinema.location.length)
+    ) {
+      setCinemas([...cinemas, cinema]);
+      setCinema({ name: "", location: "" });
+      setCinemaInputs(false);
+      setErrors((prevState) => ({
+        ...prevState,
+        cinemaName: false,
+        cinemaLocation: false,
+      }));
+    }
+
+    if (cinema.name === "" || !cinema.name.length) {
+      setErrors((prevState) => ({ ...prevState, cinemaName: true }));
+    } else {
+      setErrors((prevState) => ({ ...prevState, cinemaName: false }));
+    }
+
+    if (cinema.location === "" || !cinema.location.length) {
+      setErrors((prevState) => ({ ...prevState, cinemaLocation: true }));
+    } else {
+      setErrors((prevState) => ({ ...prevState, cinemaLocation: false }));
+    }
+  };
+
+  const addActor = () => {
+    if (
+      (actor.name !== "" || actor.name.length) &&
+      (actor.imageUrl !== "" || actor.imageUrl.length)
+    ) {
+      setActors([...actors, actor]);
+      setActor({ name: "", imageUrl: "" });
+      setActorInputs(false);
+      setErrors((prevState) => ({
+        ...prevState,
+        actorName: false,
+        actorImg: false,
+      }));
+    }
+
+    if (actor.name === "" || !actor.name.length) {
+      setErrors((prevState) => ({ ...prevState, actorName: true }));
+    } else {
+      setErrors((prevState) => ({ ...prevState, actorName: false }));
+    }
+
+    if (actor.imageUrl === "" || !actor.imageUrl.length) {
+      setErrors((prevState) => ({ ...prevState, actorImg: true }));
+    } else {
+      setErrors((prevState) => ({ ...prevState, actorImg: false }));
+    }
+  };
+
+  const handleActorChip = (actor) => {
+    let tempActorArray = actors;
+    const index = tempActorArray.indexOf(actor);
+
+    if (index > -1) tempActorArray.splice(index, 1);
+
+    setActors(() => [...tempActorArray]);
+
+    console.log("EVENT", actors, "TEMP++++", tempActorArray);
+  };
+
+  const handleCinemaChip = (cinema) => {
+    let tempCinemaArray = cinemas;
+    const index = tempCinemaArray.indexOf(cinema);
+
+    if (index > -1) tempCinemaArray.splice(index, 1);
+
+    setCinemas(() => [...tempCinemaArray]);
+
+    console.log("EVENT", cinemas, "TEMP++++", tempCinemaArray);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("SUBMIT=====", inputs);
-    console.log("ACTORS====", actors);
-    console.log("CINEMAS====", cinemas);
+
+    let formDirty = false;
+
+    if (!inputs.title.length || inputs.title === "") {
+      setErrors((prevState) => ({ ...prevState, title: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, title: false }));
+    }
+
+    if (!inputs.description.length || inputs.description === "") {
+      setErrors((prevState) => ({ ...prevState, description: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, description: false }));
+    }
+
+    if (!inputs.rating.length || inputs.rating === "") {
+      setErrors((prevState) => ({ ...prevState, rating: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, rating: false }));
+    }
+
+    if (!inputs.language.length || inputs.language === "") {
+      setErrors((prevState) => ({ ...prevState, language: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, language: false }));
+    }
+
+    if (!inputs.genre.length || inputs.genre === "") {
+      setErrors((prevState) => ({ ...prevState, genre: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, genre: false }));
+    }
+
+    if (!inputs.releaseDate.length || inputs.releaseDate === "") {
+      setErrors((prevState) => ({ ...prevState, releaseDate: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, releaseDate: false }));
+    }
+
+    if (!inputs.posterUrl.length || inputs.posterUrl === "") {
+      setErrors((prevState) => ({ ...prevState, posterUrl: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, posterUrl: false }));
+    }
+
+    if (actors.length === 0) {
+      setErrors((prevState) => ({ ...prevState, actors: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, actors: false }));
+    }
+
+    if (cinemas.length === 0) {
+      setErrors((prevState) => ({ ...prevState, cinema: true }));
+
+      formDirty = true;
+    } else {
+      setErrors((prevState) => ({ ...prevState, cinema: false }));
+    }
+
+    if (!formDirty) {
+      console.log("SUBMIT=====", inputs);
+      console.log("ACTORS====", actors);
+      console.log("CINEMAS====", cinemas);
+    }
   };
 
   return (
@@ -131,8 +320,12 @@ const AddMovie = () => {
           justifyContent={"center"}
           padding={"80px"}
         >
-          <FormLabel sx={{ fontWeight: "bold" }}>Title</FormLabel>
+          <FormLabel sx={{ fontWeight: "bold" }} required error={errors.title}>
+            Title
+          </FormLabel>
           <TextField
+            error={errors.title}
+            helperText={errors.title ? errorTexts.title : null}
             value={inputs.title}
             onChange={handleChange}
             name="title"
@@ -140,8 +333,16 @@ const AddMovie = () => {
             margin="normal"
             sx={{ mb: "40px" }}
           />
-          <FormLabel sx={{ fontWeight: "bold" }}>Description</FormLabel>
+          <FormLabel
+            sx={{ fontWeight: "bold" }}
+            required
+            error={errors.description}
+          >
+            Description
+          </FormLabel>
           <TextField
+            error={errors.description}
+            helperText={errors.description ? errorTexts.description : null}
             value={inputs.description}
             onChange={handleChange}
             name="description"
@@ -150,13 +351,16 @@ const AddMovie = () => {
             sx={{ mb: "40px" }}
           />
           <FormControl
-            sx={{ color: "primary.main" }}
+            sx={{ color: errors.rating ? "error.main" : "primary.main" }}
             value={inputs.rating}
             onChange={handleChange}
           >
             <FormLabel
               id="demo-row-radio-buttons-group-label"
               sx={{ fontWeight: "bold" }}
+              required
+              error={errors.rating}
+              helperText={errors.rating ? errorTexts.rating : null}
             >
               Rating
             </FormLabel>
@@ -165,6 +369,7 @@ const AddMovie = () => {
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="rating"
               sx={{ mb: "40px", mt: "20px" }}
+              error={errors.rating}
             >
               <FormControlLabel value="U" control={<Radio />} label="U" />
               <FormControlLabel value="U/A" control={<Radio />} label="U/A" />
@@ -172,13 +377,16 @@ const AddMovie = () => {
             </RadioGroup>
           </FormControl>
           <FormControl
-            sx={{ color: "primary.main" }}
+            sx={{ color: errors.language ? "error.main" : "primary.main" }}
             value={inputs.language}
             onChange={handleChange}
           >
             <FormLabel
               id="demo-row-radio-buttons-group-label"
               sx={{ fontWeight: "bold" }}
+              required
+              error={errors.language}
+              helperText={errors.language ? errorTexts.language : null}
             >
               Language
             </FormLabel>
@@ -236,13 +444,16 @@ const AddMovie = () => {
             </RadioGroup>
           </FormControl>
           <FormControl
-            sx={{ color: "primary.main" }}
+            sx={{ color: errors.genre ? "error.main" : "primary.main" }}
             value={inputs.genre}
             onChange={handleChange}
           >
             <FormLabel
               id="demo-row-radio-buttons-group-label"
               sx={{ fontWeight: "bold" }}
+              required
+              error={errors.genre}
+              helperText={errors.genre ? errorTexts.genre : null}
             >
               Genre
             </FormLabel>
@@ -279,66 +490,174 @@ const AddMovie = () => {
               />
             </RadioGroup>
           </FormControl>
-          <FormLabel sx={{ mb: "20px", fontWeight: "bold" }}>
-            Now Playing
+          <FormLabel
+            sx={{ mb: "20px", fontWeight: "bold" }}
+            required
+            error={errors.cinema}
+          >
+            Cinema Theatres
           </FormLabel>
-          <Box display={"flex"} alignItems={"center"} gap={2}>
-            <FormLabel>Name</FormLabel>
-            <TextField
-              name="cinemaName"
-              variant="standard"
-              margin="normal"
-              sx={{ width: "40%" }}
-              onChange={(e) => setCinema({ ...cinema, name: e.target.value })}
-            />
-            <FormLabel>Location</FormLabel>
-            <TextField
-              name="location"
-              variant="standard"
-              margin="normal"
-              sx={{ width: "40%" }}
-              onChange={(e) =>
-                setCinema({ ...cinema, location: e.target.value })
-              }
-            />
-          </Box>
-          <Button
-            color="primary"
-            variant="outlined"
-            sx={{ mt: "20px", mb: "40px", width: "15%" }}
-            onClick={() => setCinemas([...cinemas, cinema])}
+          {errors.cinema ? (
+            <FormHelperText sx={{ color: "error.main" }}>
+              {errorTexts.cinema}
+            </FormHelperText>
+          ) : null}
+          {cinemas.length !== 0 ? (
+            <Box display={"flex"} gap={1}>
+              {cinemas.map((cinema, idx) => {
+                return (
+                  <Chip
+                    label={cinema.name}
+                    key={idx}
+                    variant="outlined"
+                    onDelete={() => handleCinemaChip(cinema)}
+                  />
+                );
+              })}
+            </Box>
+          ) : null}
+          {cinemaInputs ? (
+            <>
+              <Box display={"flex"} alignItems={"center"} gap={2}>
+                <FormLabel error={errors.cinema || errors.cinemaName}>
+                  Name
+                </FormLabel>
+                <TextField
+                  error={errors.cinema || errors.cinemaName}
+                  helperText={errors.cinemaName ? errorTexts.cinemaName : null}
+                  name="cinemaName"
+                  value={cinema.name}
+                  variant="standard"
+                  margin="normal"
+                  sx={{ width: "40%" }}
+                  onChange={(e) =>
+                    setCinema({ ...cinema, name: e.target.value })
+                  }
+                />
+                <FormLabel error={errors.cinema || errors.cinemaLocation}>
+                  Location
+                </FormLabel>
+                <TextField
+                  error={errors.cinema || errors.cinemaLocation}
+                  helperText={
+                    errors.cinemaLocation ? errorTexts.cinemaLocation : null
+                  }
+                  value={cinema.location}
+                  name="location"
+                  variant="standard"
+                  margin="normal"
+                  sx={{ width: "40%" }}
+                  onChange={(e) =>
+                    setCinema({ ...cinema, location: e.target.value })
+                  }
+                />
+              </Box>
+              <Button
+                color="primary"
+                variant="outlined"
+                sx={{ mt: "20px", mb: "40px", width: "15%" }}
+                onClick={addCinema}
+              >
+                Add
+              </Button>
+            </>
+          ) : (
+            <Button
+              color="primary"
+              variant="outlined"
+              sx={{ mt: "20px", mb: "40px", width: "15%" }}
+              onClick={() => setCinemaInputs(true)}
+            >
+              Add
+            </Button>
+          )}
+          <FormLabel
+            sx={{ mb: "20px", fontWeight: "bold" }}
+            required
+            error={errors.actors}
           >
-            Add
-          </Button>
-          <FormLabel sx={{ mb: "20px", fontWeight: "bold" }}>Actors</FormLabel>
-          <Box display={"flex"} alignItems={"center"} gap={2}>
-            <FormLabel>Name</FormLabel>
-            <TextField
-              name="actorName"
-              variant="standard"
-              margin="normal"
-              sx={{ width: "40%" }}
-              onChange={(e) => setActor({ ...actor, name: e.target.value })}
-            />
-            <FormLabel>Picture URL</FormLabel>
-            <TextField
-              name="imageUrl"
-              variant="standard"
-              margin="normal"
-              sx={{ width: "40%" }}
-              onChange={(e) => setActor({ ...actor, imageUrl: e.target.value })}
-            />
-          </Box>
-          <Button
-            color="primary"
-            variant="outlined"
-            sx={{ mt: "20px", mb: "40px", width: "15%" }}
-            onClick={() => setActors([...actors, actor])}
+            Actors
+          </FormLabel>
+          {errors.actors ? (
+            <FormHelperText sx={{ color: "error.main" }}>
+              {errorTexts.actors}
+            </FormHelperText>
+          ) : null}
+          {actors.length !== 0 ? (
+            <Box display={"flex"} gap={1}>
+              {actors.map((actor, idx) => {
+                return (
+                  <Chip
+                    label={actor.name}
+                    key={idx}
+                    variant="outlined"
+                    onDelete={() => handleActorChip(actor)}
+                  />
+                );
+              })}
+            </Box>
+          ) : null}
+          {actorInputs ? (
+            <>
+              <Box display={"flex"} alignItems={"center"} gap={2}>
+                <FormLabel error={errors.actors || errors.actorName}>
+                  Name
+                </FormLabel>
+                <TextField
+                  error={errors.actors || errors.actorName}
+                  helperText={errors.actorName ? errorTexts.actorName : null}
+                  name="actorName"
+                  value={actor.name}
+                  variant="standard"
+                  margin="normal"
+                  sx={{ width: "40%" }}
+                  onChange={(e) => setActor({ ...actor, name: e.target.value })}
+                />
+                <FormLabel error={errors.actors || errors.actorImg}>
+                  Picture URL
+                </FormLabel>
+                <TextField
+                  error={errors.actors || errors.actorImg}
+                  helperText={errors.actorImg ? errorTexts.actorImg : null}
+                  name="imageUrl"
+                  value={actor.imageUrl}
+                  variant="standard"
+                  margin="normal"
+                  sx={{ width: "40%" }}
+                  onChange={(e) =>
+                    setActor({ ...actor, imageUrl: e.target.value })
+                  }
+                />
+              </Box>
+              <Button
+                color="primary"
+                variant="outlined"
+                sx={{ mt: "20px", mb: "40px", width: "15%" }}
+                onClick={addActor}
+              >
+                Add
+              </Button>
+            </>
+          ) : (
+            <Button
+              color="primary"
+              variant="outlined"
+              sx={{ mt: "20px", mb: "40px", width: "15%" }}
+              onClick={() => setActorInputs(true)}
+            >
+              Add
+            </Button>
+          )}
+          <FormLabel
+            sx={{ fontWeight: "bold" }}
+            required
+            error={errors.releaseDate}
           >
-            Add
-          </Button>
-          <FormLabel sx={{ fontWeight: "bold" }}>Release Date</FormLabel>
+            Release Date
+          </FormLabel>
           <TextField
+            error={errors.releaseDate}
+            helperText={errors.releaseDate ? errorTexts.releaseDate : null}
             type={"date"}
             name="releaseDate"
             variant="standard"
@@ -347,8 +666,16 @@ const AddMovie = () => {
             value={inputs.releaseDate}
             onChange={handleChange}
           />
-          <FormLabel sx={{ fontWeight: "bold" }}>Poster URL</FormLabel>
+          <FormLabel
+            sx={{ fontWeight: "bold" }}
+            required
+            error={errors.posterUrl}
+          >
+            Poster URL
+          </FormLabel>
           <TextField
+            error={errors.posterUrl}
+            helperText={errors.posterUrl ? errorTexts.posterUrl : null}
             name="posterUrl"
             variant="standard"
             margin="normal"
