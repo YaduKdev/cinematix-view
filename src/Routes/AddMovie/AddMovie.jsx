@@ -13,7 +13,11 @@ import {
   RadioGroup,
   TextField,
   Typography,
+  Avatar,
+  Card,
+  CardMedia,
 } from "@mui/material";
+import { addMovie } from "../../api-calls/api-calls";
 
 // const movieSchema = new Schema({
 //     title: {
@@ -288,9 +292,24 @@ const AddMovie = () => {
     }
 
     if (!formDirty) {
-      console.log("SUBMIT=====", inputs);
-      console.log("ACTORS====", actors);
-      console.log("CINEMAS====", cinemas);
+      let cities = [];
+
+      cinemas.map((cinema) => {
+        if (
+          cities.indexOf(
+            cinema.location[0].toUpperCase() + cinema.location.slice(1)
+          ) === -1
+        )
+          cities.push(
+            cinema.location[0].toUpperCase() + cinema.location.slice(1)
+          );
+      });
+
+      let movieData = { ...inputs, actors, nowPlaying: cinemas, cities };
+
+      addMovie(movieData)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     }
   };
 
@@ -329,7 +348,7 @@ const AddMovie = () => {
             value={inputs.title}
             onChange={handleChange}
             name="title"
-            variant="standard"
+            variant="outlined"
             margin="normal"
             sx={{ mb: "40px" }}
           />
@@ -341,12 +360,14 @@ const AddMovie = () => {
             Description
           </FormLabel>
           <TextField
+            multiline
+            rows={4}
             error={errors.description}
             helperText={errors.description ? errorTexts.description : null}
             value={inputs.description}
             onChange={handleChange}
             name="description"
-            variant="standard"
+            variant="outlined"
             margin="normal"
             sx={{ mb: "40px" }}
           />
@@ -372,7 +393,7 @@ const AddMovie = () => {
               error={errors.rating}
             >
               <FormControlLabel value="U" control={<Radio />} label="U" />
-              <FormControlLabel value="U/A" control={<Radio />} label="U/A" />
+              <FormControlLabel value="UA" control={<Radio />} label="UA" />
               <FormControlLabel value="A" control={<Radio />} label="A" />
             </RadioGroup>
           </FormControl>
@@ -527,7 +548,7 @@ const AddMovie = () => {
                   helperText={errors.cinemaName ? errorTexts.cinemaName : null}
                   name="cinemaName"
                   value={cinema.name}
-                  variant="standard"
+                  variant="outlined"
                   margin="normal"
                   sx={{ width: "40%" }}
                   onChange={(e) =>
@@ -544,7 +565,7 @@ const AddMovie = () => {
                   }
                   value={cinema.location}
                   name="location"
-                  variant="standard"
+                  variant="outlined"
                   margin="normal"
                   sx={{ width: "40%" }}
                   onChange={(e) =>
@@ -589,6 +610,7 @@ const AddMovie = () => {
                 return (
                   <Chip
                     label={actor.name}
+                    avatar={<Avatar alt={actor.name} src={actor.imageUrl} />}
                     key={idx}
                     variant="outlined"
                     onDelete={() => handleActorChip(actor)}
@@ -608,7 +630,7 @@ const AddMovie = () => {
                   helperText={errors.actorName ? errorTexts.actorName : null}
                   name="actorName"
                   value={actor.name}
-                  variant="standard"
+                  variant="outlined"
                   margin="normal"
                   sx={{ width: "40%" }}
                   onChange={(e) => setActor({ ...actor, name: e.target.value })}
@@ -621,7 +643,7 @@ const AddMovie = () => {
                   helperText={errors.actorImg ? errorTexts.actorImg : null}
                   name="imageUrl"
                   value={actor.imageUrl}
-                  variant="standard"
+                  variant="outlined"
                   margin="normal"
                   sx={{ width: "40%" }}
                   onChange={(e) =>
@@ -660,7 +682,7 @@ const AddMovie = () => {
             helperText={errors.releaseDate ? errorTexts.releaseDate : null}
             type={"date"}
             name="releaseDate"
-            variant="standard"
+            variant="outlined"
             margin="normal"
             sx={{ mb: "40px" }}
             value={inputs.releaseDate}
@@ -673,11 +695,21 @@ const AddMovie = () => {
           >
             Poster URL
           </FormLabel>
+          {inputs.posterUrl &&
+          (inputs.posterUrl.length || inputs.posterUrl !== "") ? (
+            <Card sx={{ maxWidth: 345, mt: "20px", mb: "20px" }}>
+              <CardMedia
+                component="img"
+                height="400"
+                image={inputs.posterUrl}
+              />
+            </Card>
+          ) : null}
           <TextField
             error={errors.posterUrl}
             helperText={errors.posterUrl ? errorTexts.posterUrl : null}
             name="posterUrl"
-            variant="standard"
+            variant="outlined"
             margin="normal"
             sx={{ mb: "40px" }}
             value={inputs.posterUrl}

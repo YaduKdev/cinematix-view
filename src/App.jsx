@@ -15,6 +15,7 @@ import BookingSuccess from "./Routes/BookingStatus/BookingSuccess";
 import BookingFail from "./Routes/BookingStatus/BookingFail";
 import UserProfile from "./Routes/UserProfile/UserProfile";
 import AddMovie from "./Routes/AddMovie/AddMovie";
+import AdminProfile from "./Routes/AdminProfile/AdminProfile";
 
 const theme = createTheme({
   colorSchemes: {
@@ -55,7 +56,7 @@ function App() {
     } else if (localStorage.getItem("adminID")) {
       dispatch(adminActions.login());
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -65,11 +66,22 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/movies" element={<Movies />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/add" element={<AddMovie />} />
-            <Route path="/auth" element={<Auth />} />
             <Route path="/booking/:id" element={<Booking />} />
-            <Route path="/user" element={<UserProfile />} />
+            {!isAdminLoggedIn && !isUserLoggedIn && (
+              <>
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/auth" element={<Auth />} />
+              </>
+            )}
+            {isUserLoggedIn && !isAdminLoggedIn && (
+              <Route path="/user" element={<UserProfile />} />
+            )}
+            {isAdminLoggedIn && !isUserLoggedIn && (
+              <>
+                <Route path="/user-admin" element={<AdminProfile />} />
+                <Route path="/add" element={<AddMovie />} />
+              </>
+            )}
             <Route
               path="/booking/transaction-success"
               element={<BookingSuccess />}

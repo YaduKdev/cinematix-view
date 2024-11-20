@@ -3,12 +3,12 @@ import {
   Box,
   Button,
   Dialog,
-  FormLabel,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { Link } from "react-router-dom";
 
 const AuthForm = ({ onSubmit, isAdmin }) => {
   const [inputs, setInputs] = useState({
@@ -33,7 +33,7 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
   return (
     <Dialog open={true}>
       <Box sx={{ ml: "auto", padding: 1 }}>
-        <IconButton>
+        <IconButton LinkComponent={Link} to="/">
           <CloseRoundedIcon />
         </IconButton>
       </Box>
