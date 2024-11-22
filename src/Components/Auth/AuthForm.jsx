@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Link } from "react-router-dom";
+import useScreenSize from "../../Hooks/ScreenSize";
 
 const AuthForm = ({ onSubmit, isAdmin }) => {
   const [inputs, setInputs] = useState({
@@ -17,6 +18,7 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
     password: "",
   });
   const [isSignUp, setIsSignUp] = useState(false);
+  const screenSize = useScreenSize();
 
   const handleFormChange = (e) => {
     setInputs((prevState) => ({
@@ -31,22 +33,33 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
   };
 
   return (
-    <Dialog open={true}>
+    <Dialog
+      sx={{
+        height: "80%",
+        mt: "auto",
+        mb: "auto",
+      }}
+      open={true}
+    >
       <Box sx={{ ml: "auto", padding: 1 }}>
         <IconButton LinkComponent={Link} to="/">
-          <CloseRoundedIcon />
+          <CloseRoundedIcon size={"small"} />
         </IconButton>
       </Box>
-      <Typography variant="h4" sx={{ mt: 2 }} textAlign={"center"}>
+      <Typography
+        variant="h4"
+        sx={{ mt: screenSize.width > 800 ? 2 : 1 }}
+        textAlign={"center"}
+      >
         {isSignUp ? "SIGN UP" : "LOGIN"}
       </Typography>
       <form onSubmit={handleFormSubmit}>
         <Box
-          padding={6}
+          padding={screenSize.width > 800 ? 6 : 2}
           display={"flex"}
           justifyContent={"center"}
           flexDirection={"column"}
-          width={400}
+          width={screenSize.width > 800 ? 400 : 280}
           margin="auto"
           alignItems={"center"}
         >
@@ -59,7 +72,7 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
               margin="normal"
               id="outlined-basic"
               label="Name"
-              sx={{ width: 320 }}
+              sx={{ width: screenSize.width > 800 ? 320 : 250 }}
               variant="outlined"
             />
           ) : null}
@@ -71,7 +84,7 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
             margin="normal"
             id="outlined-basic"
             label="Email"
-            sx={{ width: 320 }}
+            sx={{ width: screenSize.width > 800 ? 320 : 250 }}
             variant="outlined"
           />
           <TextField
@@ -80,7 +93,7 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
             onChange={handleFormChange}
             name="password"
             margin="normal"
-            sx={{ width: 320 }}
+            sx={{ width: screenSize.width > 800 ? 320 : 250 }}
             id="outlined-basic"
             label="Password"
             variant="outlined"

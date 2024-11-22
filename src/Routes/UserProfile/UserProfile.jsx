@@ -6,19 +6,15 @@ import {
 } from "../../api-calls/api-calls";
 import { Box, Divider, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
-import "./UserProfile.css";
-
-import { useTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-const UserProfile = () => {
-  const theme = useTheme();
+import "./UserProfile.css";
 
+const UserProfile = () => {
   const [userBookings, setUserBookings] = useState();
   const [userDetails, setUserDetails] = useState();
 

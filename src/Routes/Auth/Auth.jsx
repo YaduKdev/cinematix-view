@@ -26,7 +26,15 @@ const Auth = () => {
   };
 
   return (
-    <Box width={"100%"} height={"852px"} sx={{ bgcolor: "secondary.main" }}>
+    <Box
+      width={"100%"}
+      height={"843px"}
+      sx={{
+        bgcolor: "secondary.main",
+        overflow: "hidden",
+        overflowY: "hidden",
+      }}
+    >
       <AuthForm onSubmit={getData} isAdmin={false} />
     </Box>
   );

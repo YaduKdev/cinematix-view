@@ -29,7 +29,7 @@ const Admin = () => {
   return (
     <Box
       width={"100%"}
-      height={"852px"}
+      height={"843px"}
       sx={{
         bgcolor: "secondary.main",
         overflow: "hidden",
