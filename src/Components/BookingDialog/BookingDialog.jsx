@@ -29,6 +29,7 @@ import WeekendIcon from "@mui/icons-material/Weekend";
 
 import "./BookingDialog.css";
 import { getBookingData } from "../../api-calls/api-calls";
+import useScreenSize from "../../Hooks/ScreenSize";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -85,6 +86,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [bookingsData, setBookingsData] = useState([]);
   const [showSeats, setShowSeats] = useState(false);
+  const screenSize = useScreenSize();
 
   console.log("MOVIE============", movie);
 
@@ -273,6 +275,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
       className="booking-dialog-container"
     >
       <BootstrapDialog
+        fullScreen={screenSize.width < 800 && true}
         // onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
@@ -300,8 +303,21 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                 const stepProps = {};
                 const labelProps = {};
                 return (
-                  <Step key={label} {...stepProps}>
-                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  <Step
+                    key={label}
+                    {...stepProps}
+                    sx={{
+                      "& .MuiStepLabel-root .Mui-completed": {
+                        color: "success.main",
+                      },
+                      "& .MuiStepLabel-root .Mui-active": {
+                        color: "warning.main",
+                      },
+                    }}
+                  >
+                    <StepLabel {...labelProps}>
+                      {screenSize.width > 600 && label}
+                    </StepLabel>
                   </Step>
                 );
               })}
@@ -389,7 +405,9 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                 {activeStep === 2 && (
                   <Box
                     display={"flex"}
+                    flexDirection={screenSize.width < 429 ? "column" : "row"}
                     justifyContent={"center"}
+                    alignItems={screenSize.width < 429 && "center"}
                     marginTop={4}
                     marginBottom={4}
                     gap={5}

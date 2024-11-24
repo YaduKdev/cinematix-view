@@ -27,7 +27,7 @@ const Home = () => {
 
               aDate - bDate;
             })
-            .slice(0, 6)
+            .slice(0, 7)
         );
       })
       .catch((err) => console.log(err));

@@ -26,13 +26,13 @@
   background-color: #bd1616;
   padding: 15px;
   margin-right: 20px;
-  width: 580px;
+  width: 100%;
   align-self: center;
   justify-self: center;
 }
 
 .movie-pic {
-  max-width: 90%;
+  max-width: 100%;
   padding: 20px 20px 10px;
 }
 
@@ -68,4 +68,87 @@
   padding-left: 20px;
   background: rgba(0, 10, 14, 0.2);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+@media (max-width: 1300px) {
+  .booking-container {
+    gap: 0;
+    width: 100%;
+    padding: 50px 0 44px;
+  }
+
+  .movie-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+  }
+
+  .movie-pic-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .movie-pic {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .movie-title {
+    padding: 0;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .movie-info-primary {
+    width: 100%;
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .actor-pic {
+    max-width: 86.0625px;
+  }
+
+  .movie-booking-button {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .movie-rlg {
+    padding-left: 0;
+  }
+
+  .movie-actors {
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .movie-cast,
+  .movie-description,
+  .movie-title,
+  .movie-rlg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .actor-pic {
+    max-width: 57.375px;
+  }
+
+  .movie-container {
+    width: 80%;
+  }
 }

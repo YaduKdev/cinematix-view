@@ -13,10 +13,12 @@ import IconButton from "@mui/material/IconButton";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import "./UserProfile.css";
+import useScreenSize from "../../Hooks/ScreenSize";
 
 const UserProfile = () => {
   const [userBookings, setUserBookings] = useState();
   const [userDetails, setUserDetails] = useState();
+  const screenSize = useScreenSize();
 
   useEffect(() => {
     getUserBooking()
@@ -34,14 +36,12 @@ const UserProfile = () => {
       .catch((err) => console.log(err));
   };
 
-  console.log("BOOKINGS IN PROFILE========", userBookings);
-  console.log("USER PROFILE========", userDetails);
-
   return (
     <Box
       width={"100%"}
       padding={3}
       display={"flex"}
+      flexDirection={screenSize.width > 1000 ? "row" : "column"}
       justifyContent={"center"}
       alignItems={"center"}
       sx={{ bgcolor: "secondary.main" }}
@@ -80,7 +80,11 @@ const UserProfile = () => {
           </Typography>
         </Box>
       )}
-      <Divider orientation="vertical" variant="middle" flexItem />
+      <Divider
+        orientation={screenSize.width > 1000 ? "vertical" : "horizontal"}
+        variant="middle"
+        flexItem
+      />
       {userBookings && userBookings.length !== 0 && (
         <Box width={"70%"} marginBottom={5}>
           <Typography
@@ -100,14 +104,25 @@ const UserProfile = () => {
             alignItems={"center"}
             justifyContent={"center"}
             gap={2}
+            sx={{ overflowY: "auto" }}
           >
             {userBookings.map((booking) => {
               return (
                 <Card
                   sx={{
                     display: "flex",
-                    width: "600px",
-                    justifyContent: "space-between",
+                    width:
+                      screenSize.width > 1000
+                        ? "600px"
+                        : screenSize.width > 800
+                        ? "350px"
+                        : "220px",
+                    bgcolor: "warning.main",
+                    justifyContent:
+                      screenSize.width < 1000 ? "center" : "space-between",
+                    alignItems: screenSize.width < 1000 && "center",
+                    flexDirection:
+                      screenSize.width > 1000 ? "row" : "column-reverse",
                   }}
                 >
                   <Box
@@ -116,35 +131,49 @@ const UserProfile = () => {
                       flexDirection: "column",
                     }}
                   >
-                    <CardContent sx={{ flex: "1 0 auto" }}>
-                      <Typography component="div" variant="h5">
+                    <CardContent
+                      sx={{
+                        // flex: "1 0 auto",
+                        padding: screenSize.width < 800 ? "7px" : "20px",
+                      }}
+                    >
+                      <Typography
+                        component="div"
+                        variant={screenSize.width > 800 ? "h5" : "body1"}
+                        color="secondary"
+                        fontWeight={"bold"}
+                      >
                         {booking.movieTheater.movieName}
                       </Typography>
                       <Typography
                         variant="subtitle1"
+                        fontSize={screenSize.width < 800 && "13px"}
                         component="div"
-                        sx={{ color: "text.primary" }}
+                        sx={{ color: "secondary.main" }}
                       >
                         {booking.movieTheater.name}
                       </Typography>
                       <Typography
                         variant="subtitle1"
+                        fontSize={screenSize.width < 800 && "13px"}
                         component="div"
-                        sx={{ color: "text.primary" }}
+                        sx={{ color: "secondary.main" }}
                       >
                         Date: &nbsp;{booking.movieTheater.date}
                       </Typography>
                       <Typography
                         variant="subtitle1"
                         component="div"
-                        sx={{ color: "text.primary" }}
+                        fontSize={screenSize.width < 800 && "13px"}
+                        sx={{ color: "secondary.main" }}
                       >
                         Time: &nbsp;{booking.movieTheater.time}
                       </Typography>
                       <Typography
                         variant="subtitle1"
                         component="div"
-                        sx={{ color: "text.primary" }}
+                        fontSize={screenSize.width < 800 && "13px"}
+                        sx={{ color: "secondary.main" }}
                       >
                         Seats: &nbsp;
                         {booking.movieTheater.seatNumbers.map((seat) => (
@@ -156,22 +185,27 @@ const UserProfile = () => {
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        pl: 1,
-                        pb: 1,
+                        pl: screenSize.width > 1000 ? 1 : 0,
+                        pb: screenSize.width > 1000 ? 1 : 0,
                       }}
                     >
-                      <IconButton aria-label="play/pause">
+                      <IconButton
+                        sx={{ "&:hover": { backgroundColor: "warning.light" } }}
+                      >
                         <DeleteForeverIcon
                           onClick={() => handleDelete(booking._id)}
                           color="error"
-                          sx={{ height: 38, width: 38 }}
+                          sx={{
+                            height: screenSize.width > 800 ? 38 : 26,
+                            width: screenSize.width > 800 ? 38 : 26,
+                          }}
                         />
                       </IconButton>
                     </Box>
                   </Box>
                   <CardMedia
                     component="img"
-                    sx={{ width: 151 }}
+                    sx={{ width: screenSize.width > 1000 ? 200 : "100%" }}
                     image={booking.movieTheater.poster}
                     alt={booking.movieTheater.movieName}
                   />

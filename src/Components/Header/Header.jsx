@@ -70,12 +70,11 @@ const Header = () => {
 
   useEffect(() => {
     checkPage();
-    console.log("LOCATION", location);
 
     getAllMovies()
       .then((data) => setMovies(data.movies))
       .catch((err) => console.log(err));
-  }, [route.pathname]);
+  }, [route.pathname, screenSize]);
 
   window.onpopstate = () => checkPage();
 

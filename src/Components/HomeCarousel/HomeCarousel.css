@@ -47,6 +47,34 @@
   }
 }
 
+@media (max-width: 1000px) {
+  .swiper_container {
+    height: 44rem;
+  }
+  .swiper-slide {
+    width: 18rem !important;
+    height: 26rem !important;
+  }
+  .swiper-slide img {
+    width: 18rem !important;
+    height: 26rem !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .swiper_container {
+    height: 36rem;
+  }
+  .swiper-slide {
+    width: 12rem !important;
+    height: 20rem !important;
+  }
+  .swiper-slide img {
+    width: 12rem !important;
+    height: 20rem !important;
+  }
+}
+
 .swiper-slide img {
   width: 36rem;
   height: 44rem;

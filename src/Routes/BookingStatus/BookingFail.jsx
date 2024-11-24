@@ -1,3 +1,5 @@
+import { Box, Typography } from "@mui/material";
+import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 import React, { useEffect } from "react";
 
 const BookingFail = () => {
@@ -12,7 +14,26 @@ const BookingFail = () => {
     localStorage.removeItem("movieTitle");
   }, []);
 
-  return <div>Booking has Failed</div>;
+  return (
+    <Box
+      sx={{ bgcolor: "secondary.main" }}
+      display={"flex"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      width={"100%"}
+      height={"92.5vh"}
+      className="booked-success"
+    >
+      <Typography variant="h2" color="primary">
+        <ErrorOutlineRoundedIcon
+          sx={{ mr: "10px", verticalAlign: "middle" }}
+          color="error"
+          fontSize="60"
+        />
+        Could Not Book Ticket
+      </Typography>
+    </Box>
+  );
 };
 
 export default BookingFail;

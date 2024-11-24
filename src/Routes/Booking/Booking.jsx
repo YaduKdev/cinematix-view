@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "./Booking.css";
 import BookingDialog from "../../Components/BookingDialog/BookingDialog";
+import useScreenSize from "../../Hooks/ScreenSize";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -27,6 +28,7 @@ const Booking = () => {
   const [movie, setMovie] = useState();
   const [open, setOpen] = useState(false);
   const [noUserOpen, setNoUserOpen] = useState(false);
+  const screenSize = useScreenSize();
 
   const handleClickOpen = () => {
     if (!localStorage.getItem("userID")) {
@@ -55,6 +57,7 @@ const Booking = () => {
               className="movie-pic"
               src={movie.posterUrl}
               alt={movie.title}
+              loading="lazy"
             />
           </div>
           <div className="movie-info-primary">
@@ -63,7 +66,7 @@ const Booking = () => {
                 gutterBottom={true}
                 fontFamily="fantasy"
                 variant="h4"
-                color="primary"
+                color="#fafafa"
               >
                 {movie.title}
               </Typography>
@@ -71,7 +74,8 @@ const Booking = () => {
                 gutterBottom={true}
                 className="movie-rlg"
                 variant="subtitle1"
-                color="primary"
+                color="#fafafa"
+                width={screenSize.width < 1300 ? "100%" : "auto"}
               >
                 ({movie.rating}), {movie.language}, {movie.genre}
                 <Typography>
@@ -122,6 +126,7 @@ const Booking = () => {
                           gutterBottom={true}
                           variant="body2"
                           color="primary"
+                          fontSize={screenSize.width < 600 && "11px"}
                         >
                           {actor.name}
                         </Typography>
@@ -134,7 +139,13 @@ const Booking = () => {
             <div className="movie-booking-button">
               <Button
                 variant="contained"
-                size="large"
+                size={
+                  screenSize.width > 1200
+                    ? "large"
+                    : screenSize.width < 600
+                    ? "small"
+                    : "medium"
+                }
                 color="warning"
                 onClick={handleClickOpen}
               >

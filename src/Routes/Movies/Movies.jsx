@@ -6,6 +6,7 @@ import {
   FormGroup,
   Radio,
   RadioGroup,
+  Typography,
 } from "@mui/material";
 import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
@@ -18,6 +19,7 @@ import Divider from "@mui/material/Divider";
 import { Checkbox } from "@mui/material";
 import "./Movies.css";
 import { Link } from "react-router-dom";
+import useScreenSize from "../../Hooks/ScreenSize";
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
@@ -29,6 +31,7 @@ const Movies = () => {
   const [selectGenre, setSelectGenre] = useState([]);
   const [defaultCheckMovies, setDefaultCheckMovies] = useState(true);
   const [defaultCheckGenre, setDefaultCheckGenre] = useState(true);
+  const screenSize = useScreenSize();
 
   const langOptions = [
     "English",
@@ -190,6 +193,16 @@ const Movies = () => {
   };
 
   useEffect(() => {
+    if (screenSize.width < 1200) {
+      setSortOpen(false);
+      setLangOpen(false);
+      setGenreOpen(false);
+    } else {
+      setSortOpen(true);
+      setLangOpen(true);
+      setGenreOpen(true);
+    }
+
     getAllMovies()
       .then((data) => {
         setDisplayMovies(
@@ -211,135 +224,335 @@ const Movies = () => {
         );
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [screenSize]);
 
   return (
-    <Box sx={{ bgcolor: "secondary.main" }} className="movies-container">
-      <Box sx={{ bgcolor: "secondary.main" }} className="filter-container">
+    <Box
+      sx={{
+        bgcolor: "secondary.main",
+      }}
+      className="movies-container"
+    >
+      <Box
+        sx={{
+          bgcolor: "secondary.main",
+          width: screenSize.width < 1200 ? "100%" : "380px",
+          position: "fixed",
+          zIndex: 1,
+          height: screenSize.width > 1200 ? "100%" : "auto",
+          left: screenSize.width > 1200 && 0,
+          top:
+            screenSize.width < 1200
+              ? screenSize.width < 800
+                ? "148px"
+                : "77px"
+              : "78px",
+          overflowY: "auto",
+        }}
+        className="filter-container"
+      >
         <List
           sx={{
-            width: "400px",
-            maxWidth: 360,
+            width: screenSize.width > 1200 ? "400px" : "100%",
+            maxWidth: screenSize.width > 1200 ? 380 : "100%",
+            height: screenSize.width > 1200 ? "100%" : "auto",
             bgcolor: "background.paper",
           }}
           component="nav"
           aria-labelledby="nested-list-subheader"
           subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
+            <ListSubheader
+              sx={{
+                display: screenSize.width < 1200 && "flex",
+                justifyContent: screenSize.width < 1200 && "center",
+                alignItems: screenSize.width < 1200 && "center",
+              }}
+              component="div"
+              id="nested-list-subheader"
+            >
               FILTERS
             </ListSubheader>
           }
         >
           <Divider />
-          <ListItemButton onClick={() => handleClick("sort")}>
-            <ListItemText secondary="Sort By" />
-            {sortOpen ? (
-              <ExpandLess sx={{ color: "primary.main" }} />
-            ) : (
-              <ExpandMore sx={{ color: "primary.main" }} />
-            )}
-          </ListItemButton>
-          <Collapse in={sortOpen} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="newest"
-                  name="radio-buttons-group"
-                  onClick={handleSorting}
-                >
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="newest"
-                    control={<Radio />}
-                    label="New To Old"
-                  />
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="oldest"
-                    control={<Radio />}
-                    label="Old To New"
-                  />
-                </RadioGroup>
+          <Box
+            sx={{
+              display: screenSize.width < 1200 && "flex",
+              justifyContent: screenSize.width < 1200 && "center",
+            }}
+          >
+            <Box>
+              <ListItemButton onClick={() => handleClick("sort")}>
+                <ListItemText secondary="Sort By" />
+                {sortOpen ? (
+                  <ExpandLess sx={{ color: "primary.main" }} />
+                ) : (
+                  <ExpandMore sx={{ color: "primary.main" }} />
+                )}
               </ListItemButton>
-            </List>
-          </Collapse>
-          <Divider />
-          <ListItemButton onClick={() => handleClick("lang")}>
-            <ListItemText secondary="Languages" />
-            {langOpen ? (
-              <ExpandLess sx={{ color: "primary.main" }} />
-            ) : (
-              <ExpandMore sx={{ color: "primary.main" }} />
-            )}
-          </ListItemButton>
-          <Collapse in={langOpen} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <FormGroup onClick={handleLangSort}>
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="all"
-                    control={<Checkbox checked={defaultCheckMovies} disabled />}
-                    label="All"
-                  />
-                  {langOptions.map((lang, idx) => {
-                    return (
+              <Collapse in={sortOpen} timeout="auto" unmountOnExit>
+                <List component="div" disableRipple disablePadding>
+                  <ListItemButton
+                    disableRipple
+                    sx={{
+                      pl: screenSize.width > 800 ? 4 : 2,
+                      cursor: "default",
+                      "&:hover": {
+                        background: "none",
+                      },
+                    }}
+                  >
+                    <RadioGroup
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      defaultValue="newest"
+                      name="radio-buttons-group"
+                      onClick={handleSorting}
+                    >
                       <FormControlLabel
                         sx={{ color: "primary.main" }}
-                        value={lang.toLowerCase()}
-                        control={<Checkbox />}
-                        label={lang}
+                        value="newest"
+                        control={
+                          <Radio
+                            size={screenSize.width < 800 ? "small" : "medium"}
+                          />
+                        }
+                        label={
+                          screenSize.width > 1200 ? (
+                            "New To Old"
+                          ) : screenSize.width > 800 ? (
+                            "Newest"
+                          ) : (
+                            <Typography variant="body1" fontSize={12}>
+                              New
+                            </Typography>
+                          )
+                        }
                       />
-                    );
-                  })}
-                </FormGroup>
-              </ListItemButton>
-            </List>
-          </Collapse>
-          <Divider />
-          <ListItemButton onClick={() => handleClick("genre")}>
-            <ListItemText secondary="Genres" />
-            {genreOpen ? (
-              <ExpandLess sx={{ color: "primary.main" }} />
-            ) : (
-              <ExpandMore sx={{ color: "primary.main" }} />
-            )}
-          </ListItemButton>
-          <Collapse in={genreOpen} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <FormGroup onClick={handleGenreSort}>
-                  <FormControlLabel
-                    sx={{ color: "primary.main" }}
-                    value="all"
-                    control={<Checkbox checked={defaultCheckGenre} disabled />}
-                    label="All"
-                  />
-                  {genreOptions.map((genre, idx) => {
-                    return (
                       <FormControlLabel
                         sx={{ color: "primary.main" }}
-                        value={genre.toLowerCase()}
-                        control={<Checkbox />}
-                        label={genre}
+                        value="oldest"
+                        control={
+                          <Radio
+                            size={screenSize.width < 800 ? "small" : "medium"}
+                          />
+                        }
+                        label={
+                          screenSize.width > 1200 ? (
+                            "Old To New"
+                          ) : screenSize.width > 800 ? (
+                            "Oldest"
+                          ) : (
+                            <Typography variant="body1" fontSize={12}>
+                              Old
+                            </Typography>
+                          )
+                        }
                       />
-                    );
-                  })}
-                </FormGroup>
+                    </RadioGroup>
+                  </ListItemButton>
+                </List>
+              </Collapse>
+            </Box>
+            <Divider />
+            <Box>
+              <ListItemButton onClick={() => handleClick("lang")}>
+                <ListItemText secondary="Languages" />
+                {langOpen ? (
+                  <ExpandLess sx={{ color: "primary.main" }} />
+                ) : (
+                  <ExpandMore sx={{ color: "primary.main" }} />
+                )}
               </ListItemButton>
-            </List>
-          </Collapse>
+              <Collapse in={langOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    disableRipple
+                    sx={{
+                      pl: screenSize.width > 800 ? 4 : 2,
+                      cursor: "default",
+                      "&:hover": {
+                        background: "none",
+                      },
+                    }}
+                  >
+                    <FormGroup onClick={handleLangSort}>
+                      <FormControlLabel
+                        sx={{ color: "primary.main" }}
+                        value="all"
+                        control={
+                          <Checkbox
+                            size={screenSize.width < 800 ? "small" : "medium"}
+                            checked={defaultCheckMovies}
+                            disabled
+                          />
+                        }
+                        label={
+                          screenSize.width > 800 ? (
+                            "All"
+                          ) : (
+                            <Typography variant="body1" fontSize={12}>
+                              All
+                            </Typography>
+                          )
+                        }
+                      />
+                      {langOptions.map((lang, idx) => {
+                        return (
+                          <FormControlLabel
+                            sx={{ color: "primary.main" }}
+                            value={lang.toLowerCase()}
+                            control={
+                              <Checkbox
+                                size={
+                                  screenSize.width < 800 ? "small" : "medium"
+                                }
+                              />
+                            }
+                            label={
+                              screenSize.width > 800 ? (
+                                lang
+                              ) : (
+                                <Typography variant="body1" fontSize={12}>
+                                  {lang}
+                                </Typography>
+                              )
+                            }
+                          />
+                        );
+                      })}
+                    </FormGroup>
+                  </ListItemButton>
+                </List>
+              </Collapse>
+            </Box>
+            <Divider />
+            <Box>
+              <ListItemButton onClick={() => handleClick("genre")}>
+                <ListItemText secondary="Genres" />
+                {genreOpen ? (
+                  <ExpandLess sx={{ color: "primary.main" }} />
+                ) : (
+                  <ExpandMore sx={{ color: "primary.main" }} />
+                )}
+              </ListItemButton>
+              <Collapse in={genreOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    disableRipple
+                    sx={{
+                      pl: screenSize.width > 800 ? 4 : 2,
+                      cursor: "default",
+                      "&:hover": {
+                        background: "none",
+                      },
+                    }}
+                  >
+                    <FormGroup onClick={handleGenreSort}>
+                      <FormControlLabel
+                        sx={{ color: "primary.main" }}
+                        value="all"
+                        control={
+                          <Checkbox
+                            size={screenSize.width < 800 ? "small" : "medium"}
+                            checked={defaultCheckGenre}
+                            disabled
+                          />
+                        }
+                        label={
+                          screenSize.width > 800 ? (
+                            "All"
+                          ) : (
+                            <Typography variant="body1" fontSize={12}>
+                              All
+                            </Typography>
+                          )
+                        }
+                      />
+                      {genreOptions.map((genre, idx) => {
+                        return (
+                          <FormControlLabel
+                            sx={{ color: "primary.main" }}
+                            value={genre.toLowerCase()}
+                            control={
+                              <Checkbox
+                                size={
+                                  screenSize.width < 800 ? "small" : "medium"
+                                }
+                              />
+                            }
+                            label={
+                              screenSize.width > 800 ? (
+                                genre
+                              ) : (
+                                <Typography variant="body1" fontSize={12}>
+                                  {genre}
+                                </Typography>
+                              )
+                            }
+                          />
+                        );
+                      })}
+                    </FormGroup>
+                  </ListItemButton>
+                </List>
+              </Collapse>
+            </Box>
+          </Box>
         </List>
       </Box>
-      <Box sx={{ bgcolor: "secondary.main" }} className="preview-container">
+      <Box
+        sx={{
+          bgcolor: "secondary.main",
+          ml: screenSize.width > 1200 && "400px",
+          mt: screenSize.width < 1200 && "55px",
+        }}
+        className="preview-container"
+      >
         {displayMovies.map((movie) => {
           return (
-            <Link to={`/booking/${movie._id}`}>
+            <Link key={movie._id} to={`/booking/${movie._id}`}>
               <div
                 className="preview"
-                style={{ backgroundImage: `url(${movie.posterUrl})` }}
-              ></div>
+                style={{
+                  backgroundImage: `url(${movie.posterUrl})`,
+                  position: "relative",
+                }}
+              >
+                <Box
+                  width={"100%"}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  alignItems={"flex-start"}
+                  paddingTop={1}
+                  sx={{
+                    position: "absolute",
+                    bottom: "0",
+                    left: "0",
+                    background: "rgba(8, 8, 8, 0.63)",
+                    boxShadow:
+                      "rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;",
+                  }}
+                >
+                  <Typography
+                    variant={screenSize.width > 1200 ? "h5" : "h6"}
+                    color="#fafafa"
+                    fontSize={screenSize.width < 600 && "13px"}
+                    fontWeight={"bold"}
+                    paddingLeft={1}
+                  >
+                    {movie.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    fontSize={screenSize.width < 600 && "10px"}
+                    color="#fafafa"
+                    paddingLeft={1}
+                    paddingBottom={1}
+                  >
+                    {movie.rating}, {movie.language}
+                  </Typography>
+                </Box>
+              </div>
             </Link>
           );
         })}
