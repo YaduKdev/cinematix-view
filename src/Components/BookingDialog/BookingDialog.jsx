@@ -203,6 +203,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
     localStorage.setItem("showTime", showTime);
     localStorage.setItem("moviePoster", movie.posterUrl);
     localStorage.setItem("movieTitle", movie.title);
+    localStorage.setItem("transaction", "yes");
 
     const response = await fetch(
       "http://localhost:5000/booking/create-checkout-session",

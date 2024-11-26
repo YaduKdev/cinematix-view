@@ -12,23 +12,24 @@ const Home = () => {
   const [topMovies, setTopMovies] = useState([]);
 
   useEffect(() => {
-    let releasedMovies = [];
+    if (localStorage.getItem("movie")) localStorage.removeItem("movie");
+    if (localStorage.getItem("transaction"))
+      localStorage.removeItem("transaction");
+
     getAllMovies()
       .then((data) => {
-        data.movies.map((movie) => {
-          if (!movie.bookingsOpen) releasedMovies.push(movie);
-        });
-
         setTopMovies(
           data.movies
             .sort((a, b) => {
               let aDate = new Date(a.releaseDate);
               let bDate = new Date(b.releaseDate);
 
-              aDate - bDate;
+              return bDate - aDate;
             })
             .slice(0, 7)
         );
+
+        console.log("top moviii====", topMovies);
       })
       .catch((err) => console.log(err));
   }, []);

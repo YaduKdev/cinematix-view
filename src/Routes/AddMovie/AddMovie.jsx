@@ -18,63 +18,7 @@ import {
   CardMedia,
 } from "@mui/material";
 import { addMovie } from "../../api-calls/api-calls";
-
-// const movieSchema = new Schema({
-//     title: {
-//       type: String,
-//       required: true,
-//     },
-//     description: {
-//       type: String,
-//       required: true,
-//     },
-//     rating: { type: String, required: true },
-//     bookingsOpen: { type: Boolean },
-//     language: {
-//       type: String,
-//       required: true,
-//     },
-//     trailerLink: { type: String },
-//     genre: {
-//       type: String,
-//       required: true,
-//     },
-//     nowPlaying: [
-//       {
-//         type: {
-//           name: [{ type: String }],
-//           location: { type: String },
-//         },
-//       },
-//     ],
-//     actors: [
-//       {
-//         type: {
-//           name: { type: String },
-//           imageUrl: { type: String },
-//         },
-//         required: true,
-//       },
-//     ],
-//     releaseDate: {
-//       type: Date,
-//       required: true,
-//     },
-//     posterUrl: {
-//       type: String,
-//       required: true,
-//     },
-//     featured: {
-//       type: Boolean,
-//     },
-//     bookings: [{ type: mongoose.Types.ObjectId, ref: "Booking" }],
-//     admin: {
-//       type: mongoose.Types.ObjectId,
-//       ref: "Admin",
-//       required: true,
-//     },
-//     cities: [{ type: String, required: true }],
-//   });
+import useScreenSize from "../../Hooks/ScreenSize";
 
 const AddMovie = () => {
   const [inputs, setInputs] = useState({
@@ -128,6 +72,7 @@ const AddMovie = () => {
   });
   const [actorInputs, setActorInputs] = useState(false);
   const [cinemaInputs, setCinemaInputs] = useState(false);
+  const screenSize = useScreenSize();
 
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -331,13 +276,22 @@ const AddMovie = () => {
       >
         ADD MOVIE
       </Typography>
-      <form style={{ width: "60%" }} onSubmit={handleSubmit}>
+      <form
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onSubmit={handleSubmit}
+      >
         <Box
           sx={{ bgcolor: "background.paper" }}
           display={"flex"}
           flexDirection={"column"}
           justifyContent={"center"}
-          padding={"80px"}
+          padding={screenSize.width > 600 ? "80px" : "40px"}
+          width={screenSize.width > 800 ? "80%" : "100%"}
         >
           <FormLabel sx={{ fontWeight: "bold" }} required error={errors.title}>
             Title
@@ -524,7 +478,7 @@ const AddMovie = () => {
             </FormHelperText>
           ) : null}
           {cinemas.length !== 0 ? (
-            <Box display={"flex"} gap={1}>
+            <Box display={"flex"} gap={1} flexWrap={"wrap"} width={"100%"}>
               {cinemas.map((cinema, idx) => {
                 return (
                   <Chip
@@ -605,7 +559,7 @@ const AddMovie = () => {
             </FormHelperText>
           ) : null}
           {actors.length !== 0 ? (
-            <Box display={"flex"} gap={1}>
+            <Box display={"flex"} gap={1} flexWrap={"wrap"} width={"100%"}>
               {actors.map((actor, idx) => {
                 return (
                   <Chip

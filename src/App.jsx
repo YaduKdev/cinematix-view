@@ -16,6 +16,7 @@ import BookingFail from "./Routes/BookingStatus/BookingFail";
 import UserProfile from "./Routes/UserProfile/UserProfile";
 import AddMovie from "./Routes/AddMovie/AddMovie";
 import AdminProfile from "./Routes/AdminProfile/AdminProfile";
+import NoMatch from "./Routes/NoMatch/NoMatch";
 
 const theme = createTheme({
   colorSchemes: {
@@ -82,11 +83,19 @@ function App() {
                 <Route path="/add" element={<AddMovie />} />
               </>
             )}
-            <Route
-              path="/booking/transaction-success"
-              element={<BookingSuccess />}
-            />
-            <Route path="/booking/transaction-fail" element={<BookingFail />} />
+            {localStorage.getItem("transaction") && (
+              <>
+                <Route
+                  path="/booking/transaction-success"
+                  element={<BookingSuccess />}
+                />
+                <Route
+                  path="/booking/transaction-fail"
+                  element={<BookingFail />}
+                />
+              </>
+            )}
+            <Route path="*" element={<NoMatch />} />
           </Routes>
         </section>
       </ThemeProvider>

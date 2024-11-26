@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getMovieById } from "../../api-calls/api-calls";
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -29,6 +29,7 @@ const Booking = () => {
   const [open, setOpen] = useState(false);
   const [noUserOpen, setNoUserOpen] = useState(false);
   const screenSize = useScreenSize();
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     if (!localStorage.getItem("userID")) {
@@ -43,8 +44,13 @@ const Booking = () => {
   };
 
   useEffect(() => {
+    if (localStorage.getItem("movie")) localStorage.removeItem("movie");
+
     getMovieById(id)
-      .then((data) => setMovie(data.movie))
+      .then((data) => {
+        if (data) setMovie(data.movie);
+        if (!data) navigate("*");
+      })
       .catch((err) => console.log(err));
   }, [id]);
 

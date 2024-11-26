@@ -4,7 +4,7 @@ import {
   getUserBooking,
   getUserDetails,
 } from "../../api-calls/api-calls";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -21,6 +21,10 @@ const UserProfile = () => {
   const screenSize = useScreenSize();
 
   useEffect(() => {
+    if (localStorage.getItem("movie")) localStorage.removeItem("movie");
+    if (localStorage.getItem("transaction"))
+      localStorage.removeItem("transaction");
+
     getUserBooking()
       .then((res) => setUserBookings(res.userBookings))
       .catch((err) => console.log(err));
@@ -32,7 +36,10 @@ const UserProfile = () => {
 
   const handleDelete = (id) => {
     deleteBooking(id)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        if (res.message === "Successfully Deleted") window.location.reload();
+      })
       .catch((err) => console.log(err));
   };
 
@@ -52,8 +59,19 @@ const UserProfile = () => {
           flexDirection={"column"}
           justifyContent={"center"}
           alignItems={"center"}
-          width={"30%"}
+          width={screenSize.width > 1000 ? "30%" : "100%"}
+          height={screenSize.width < 1000 ? "40%" : "100%"}
           gap={2}
+          position={"fixed"}
+          top={
+            screenSize.width > 1000
+              ? "77px"
+              : screenSize.width > 800
+              ? "77px"
+              : "140px"
+          }
+          left={0}
+          sx={{ bgcolor: "background.paper", zIndex: 1 }}
         >
           <AccountCircleIcon sx={{ fontSize: "10rem" }} color="primary" />
           <Typography
@@ -80,21 +98,43 @@ const UserProfile = () => {
           </Typography>
         </Box>
       )}
-      <Divider
-        orientation={screenSize.width > 1000 ? "vertical" : "horizontal"}
-        variant="middle"
-        flexItem
-      />
       {userBookings && userBookings.length !== 0 && (
-        <Box width={"70%"} marginBottom={5}>
+        <Box
+          width={"70%"}
+          height={"100%"}
+          marginBottom={5}
+          sx={{
+            ml: screenSize.width > 1000 ? "30%" : 0,
+            mt:
+              screenSize.width > 1000
+                ? 0
+                : screenSize.width > 800
+                ? "450px"
+                : "380px",
+            position: "relative",
+          }}
+        >
           <Typography
-            padding={1}
-            width={"auto"}
+            paddingTop={1}
+            paddingBottom={1}
             textAlign={"center"}
-            color="primary"
+            color="#fafafa"
             marginBottom={4}
             variant="h5"
             fontWeight={"bold"}
+            sx={{
+              position: "fixed",
+              width: screenSize.width > 1000 ? "75%" : "100%",
+              bgcolor: "error.main",
+              zIndex: 1,
+              top:
+                screenSize.width > 1000
+                  ? "76px"
+                  : screenSize.width > 800
+                  ? "440px"
+                  : "480px",
+              left: screenSize.width > 1000 ? "30%" : 0,
+            }}
           >
             BOOKINGS
           </Typography>
@@ -104,7 +144,10 @@ const UserProfile = () => {
             alignItems={"center"}
             justifyContent={"center"}
             gap={2}
-            sx={{ overflowY: "auto" }}
+            sx={{
+              pt: "50px",
+              pb: "20px",
+            }}
           >
             {userBookings.map((booking) => {
               return (
@@ -133,7 +176,7 @@ const UserProfile = () => {
                   >
                     <CardContent
                       sx={{
-                        // flex: "1 0 auto",
+                        flex: "1 0 auto",
                         padding: screenSize.width < 800 ? "7px" : "20px",
                       }}
                     >

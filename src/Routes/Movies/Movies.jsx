@@ -193,6 +193,10 @@ const Movies = () => {
   };
 
   useEffect(() => {
+    if (localStorage.getItem("movie")) localStorage.removeItem("movie");
+    if (localStorage.getItem("transaction"))
+      localStorage.removeItem("transaction");
+
     if (screenSize.width < 1200) {
       setSortOpen(false);
       setLangOpen(false);
