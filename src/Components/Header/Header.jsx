@@ -56,7 +56,7 @@ const Header = () => {
     } else if (route.pathname === "/add") {
       screenSize.width > 800 ? setPageValue(1) : setPageValue(2);
     } else if (route.pathname === "/user-admin") {
-      screenSize.width > 800 ? setPageValue(2) : setPageValue(3);
+      screenSize.width > 800 ? setPageValue(1) : setPageValue(2);
     } else if (route.pathname === "/" || route.pathname.includes("/booking")) {
       setPageValue(false);
     }
@@ -66,6 +66,11 @@ const Header = () => {
     setOpenSearch(false);
     const movie = movies.find((m) => m.title === val);
     navigate(`/booking/${movie._id}`);
+  };
+
+  const authLogout = (condition) => {
+    logout(condition);
+    navigate("/");
   };
 
   useEffect(() => {
@@ -147,7 +152,7 @@ const Header = () => {
             >
               {screenSize.width < 800 && (
                 <Tab
-                  icon={<SearchIcon />}
+                  icon={<SearchIcon fontSize="small" />}
                   label="Search"
                   onClick={() => setOpenSearch(true)}
                 />
@@ -186,21 +191,21 @@ const Header = () => {
               {isUserLoggedIn && (
                 <Tab
                   icon={<LogoutIcon />}
-                  onClick={() => logout(false)}
+                  onClick={() => authLogout(false)}
                   LinkComponent={Link}
                   to="/"
                   label="Logout"
                 />
               )}
-              {isAdminLoggedIn && (
+              {/* {isAdminLoggedIn && (
                 <Tab
                   icon={<LoupeIcon />}
                   LinkComponent={Link}
                   to="/add"
                   onClick={() => setPageValue(1)}
-                  label="Add Movie"
+                  label="Add"
                 />
-              )}
+              )} */}
               {isAdminLoggedIn && (
                 <Tab
                   icon={<AdminPanelSettingsIcon />}
@@ -212,7 +217,7 @@ const Header = () => {
               {isAdminLoggedIn && (
                 <Tab
                   icon={<LogoutIcon />}
-                  onClick={() => logout(true)}
+                  onClick={() => authLogout(true)}
                   LinkComponent={Link}
                   to="/"
                   label="Logout"

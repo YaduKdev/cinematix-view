@@ -12,6 +12,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { createBooking } from "../../api-calls/api-calls";
 import useScreenSize from "../../Hooks/ScreenSize";
 import { useReactToPrint } from "react-to-print";
+import Logo from "../../assets/logo.png";
+import Barcode from "../../assets/barcode.avif";
+import MovieTicket from "../../Components/MovieTicket/MovieTicket";
 
 const BookingSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -89,84 +92,7 @@ const BookingSuccess = () => {
       </Typography>
       {ticketData && (
         <Box display={"none"}>
-          <Card
-            ref={contentRef}
-            sx={{
-              display: "flex",
-              width: "100%",
-              bgcolor: "warning.main",
-              justifyContent: "space-between",
-              borderRadius: "0%",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <CardContent
-                sx={{
-                  flex: "1 0 auto",
-                  padding: "20px",
-                }}
-              >
-                <Typography
-                  component="div"
-                  variant="h5"
-                  color="secondary"
-                  fontWeight={"bold"}
-                >
-                  {ticketData.movieTheater.movieName}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  component="div"
-                  sx={{ color: "secondary.main" }}
-                >
-                  {ticketData.movieTheater.name}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  component="div"
-                  sx={{ color: "secondary.main" }}
-                >
-                  Date: &nbsp;{ticketData.movieTheater.date}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  component="div"
-                  sx={{ color: "secondary.main" }}
-                >
-                  Time: &nbsp;{ticketData.movieTheater.time}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  component="div"
-                  sx={{ color: "secondary.main" }}
-                >
-                  Seats: &nbsp;
-                  {ticketData.movieTheater.seatNumbers.map((seat) => (
-                    <span>{seat} &nbsp;</span>
-                  ))}
-                </Typography>
-              </CardContent>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  pl: 1,
-                  pb: 1,
-                }}
-              ></Box>
-            </Box>
-            <CardMedia
-              component="img"
-              sx={{ width: 121 }}
-              image={ticketData.movieTheater.poster}
-              alt={ticketData.movieTheater.movieName}
-            />
-          </Card>
+          <MovieTicket ref={contentRef} ticketData={ticketData} />
         </Box>
       )}
       <Box

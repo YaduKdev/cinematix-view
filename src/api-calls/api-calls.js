@@ -167,3 +167,15 @@ export const addMovie = async (data) => {
 
   return resData;
 };
+
+export const userGoogleLogin = async (code) => {
+  const res = await axios
+    .get(`/user/google?code=${code}`)
+    .catch((err) => console.log(err));
+
+  if (res.status !== 200) return console.log("Unexpected Error");
+
+  const data = await res.data;
+
+  return data;
+};

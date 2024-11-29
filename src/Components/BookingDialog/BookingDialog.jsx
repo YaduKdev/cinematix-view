@@ -88,8 +88,6 @@ const BookingDialog = ({ open, handleClose, movie }) => {
   const [showSeats, setShowSeats] = useState(false);
   const screenSize = useScreenSize();
 
-  console.log("MOVIE============", movie);
-
   const setCurrentCity = (event) => {
     const { value } = event.target;
 
@@ -106,17 +104,11 @@ const BookingDialog = ({ open, handleClose, movie }) => {
     setCinema(currentCinema);
   };
 
-  useEffect(() => {
-    console.log(
-      "BOOKINGSDATAonupdate+++++++++++++++++++-------+++++++++",
-      bookingsData
-    );
-  }, [bookingsData]);
+  useEffect(() => {}, [bookingsData]);
 
   const handleNext = () => {
     if (activeStep === 2) {
       let bookings = [];
-      console.log("BOOKINGSDATAprev==========", bookingsData);
 
       movie.bookings.map((booking) => {
         getBookingData(booking).then((res) => {
@@ -135,11 +127,6 @@ const BookingDialog = ({ open, handleClose, movie }) => {
       });
 
       setBookingsData(bookings);
-
-      console.log("BOOKINGS===========", bookings);
-      console.log("BOOKINGSDATAafter=========", bookingsData);
-
-      // setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -220,12 +207,9 @@ const BookingDialog = ({ open, handleClose, movie }) => {
       sessionId: session.id,
     });
 
-    console.log(result);
     if (result.error) {
       console.log(result.error);
     }
-
-    // handleNext();
   };
 
   const handleBack = () => {

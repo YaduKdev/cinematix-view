@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { addMovie } from "../../api-calls/api-calls";
 import useScreenSize from "../../Hooks/ScreenSize";
+import { useSnackbar } from "notistack";
 
 const AddMovie = () => {
   const [inputs, setInputs] = useState({
@@ -73,6 +74,7 @@ const AddMovie = () => {
   const [actorInputs, setActorInputs] = useState(false);
   const [cinemaInputs, setCinemaInputs] = useState(false);
   const screenSize = useScreenSize();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -253,8 +255,38 @@ const AddMovie = () => {
       let movieData = { ...inputs, actors, nowPlaying: cinemas, cities };
 
       addMovie(movieData)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          console.log(res);
+          enqueueSnackbar("Movie Has Been Added!.", {
+            variant: "success",
+          });
+
+          setInputs({
+            title: "",
+            description: "",
+            rating: "",
+            language: "",
+            genre: "",
+            releaseDate: "",
+            posterUrl: "",
+          });
+          setActors([]);
+          setActor({
+            name: "",
+            imageUrl: "",
+          });
+          setCinemas([]);
+          setCinema({
+            name: "",
+            location: "",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          enqueueSnackbar("Could Not Add Movie!", {
+            variant: "error",
+          });
+        });
     }
   };
 

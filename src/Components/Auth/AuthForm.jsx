@@ -4,14 +4,19 @@ import {
   Button,
   Dialog,
   IconButton,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Link } from "react-router-dom";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import useScreenSize from "../../Hooks/ScreenSize";
+import { blue } from "@mui/material/colors";
+import GoogleIcon from "@mui/icons-material/Google";
 
-const AuthForm = ({ onSubmit, isAdmin }) => {
+const AuthForm = ({ onSubmit, gAuth, isAdmin }) => {
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
@@ -19,6 +24,17 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
   });
   const [isSignUp, setIsSignUp] = useState(false);
   const screenSize = useScreenSize();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleFormChange = (e) => {
     setInputs((prevState) => ({
@@ -34,8 +50,9 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
 
   return (
     <Dialog
+      fullScreen={screenSize.width < 800 && true}
       sx={{
-        height: "80%",
+        height: screenSize.width > 800 ? "80%" : "auto",
         mt: "auto",
         mb: "auto",
       }}
@@ -74,6 +91,7 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
               label="Name"
               sx={{ width: screenSize.width > 800 ? 320 : 250 }}
               variant="outlined"
+              required
             />
           ) : null}
           <TextField
@@ -86,17 +104,42 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
             label="Email"
             sx={{ width: screenSize.width > 800 ? 320 : 250 }}
             variant="outlined"
+            required
           />
           <TextField
-            type={"password"}
+            type={showPassword ? "text" : "password"}
             value={inputs.password}
             onChange={handleFormChange}
             name="password"
             margin="normal"
             sx={{ width: screenSize.width > 800 ? 320 : 250 }}
-            id="outlined-basic"
+            id="outlined-basic-pass"
             label="Password"
             variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showPassword
+                        ? "hide the password"
+                        : "display the password"
+                    }
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                    edge="end"
+                  >
+                    {showPassword ? (
+                      <VisibilityOff color="primary" />
+                    ) : (
+                      <Visibility color="primary" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            required
           />
           <Button
             type="submit"
@@ -106,6 +149,17 @@ const AuthForm = ({ onSubmit, isAdmin }) => {
             fullWidth
           >
             {isSignUp ? "SIGN UP" : "LOGIN"}
+          </Button>
+          <Button
+            sx={{ mt: 4, bgcolor: blue[500] }}
+            size="large"
+            variant="contained"
+            fullWidth
+            color="secondary"
+            onClick={() => gAuth(isSignUp)}
+          >
+            <GoogleIcon sx={{ fontSize: "18px", marginRight: "4px" }} />
+            {isSignUp ? "SIGN UP WITH GOOLE" : "LOGIN WITH GOOGLE"}
           </Button>
           {!isAdmin && (
             <Button

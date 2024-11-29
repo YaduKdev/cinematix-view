@@ -4,6 +4,7 @@
   justify-content: center;
   gap: 50px;
   padding: 80px 50px 100px;
+  min-height: 91.68svh;
 }
 
 .preview-container {
