@@ -13,7 +13,6 @@ const Admin = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const onResRecieved = (data) => {
-    console.log(data);
     dispatch(adminActions.login());
     localStorage.setItem("adminID", data.id);
     localStorage.setItem("token", data.token);
@@ -27,8 +26,6 @@ const Admin = () => {
   };
 
   const getData = (data) => {
-    console.log("Admin", data);
-
     sendAdminAuthRequest(data.inputs)
       .then(onResRecieved)
       .catch((err) => {

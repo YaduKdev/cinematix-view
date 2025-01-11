@@ -125,9 +125,9 @@ const Booking = () => {
                     </Typography>
                   </div>
                   <div className="movie-actors">
-                    {movie.actors.map((actor) => {
+                    {movie.actors.map((actor, idx) => {
                       return (
-                        <div className="actor-details">
+                        <div key={idx} className="actor-details">
                           {actor.imageUrl ? (
                             <div className="actor-img">
                               <img

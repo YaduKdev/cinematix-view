@@ -100,8 +100,8 @@ const Header = () => {
           width={"100%"}
         >
           <Box
-            paddingTop={screenSize.width < 800 && "10px"}
-            paddingBottom={screenSize.width < 800 && "10px"}
+            paddingTop={screenSize.width < 800 ? "10px" : 0}
+            paddingBottom={screenSize.width < 800 ? "10px" : 0}
             width={screenSize.width < 800 ? "100%" : "10%"}
             display={screenSize.width < 800 && "flex"}
             justifyContent={screenSize.width < 800 && "center"}

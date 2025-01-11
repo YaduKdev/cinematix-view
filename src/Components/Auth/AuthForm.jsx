@@ -89,6 +89,7 @@ const AuthForm = ({ onSubmit, gAuth, isAdmin }) => {
               margin="normal"
               id="outlined-basic"
               label="Name"
+              autoComplete="current-name"
               sx={{ width: screenSize.width > 800 ? 320 : 250 }}
               variant="outlined"
               required
@@ -105,6 +106,7 @@ const AuthForm = ({ onSubmit, gAuth, isAdmin }) => {
             sx={{ width: screenSize.width > 800 ? 320 : 250 }}
             variant="outlined"
             required
+            autoComplete="current-name"
           />
           <TextField
             type={showPassword ? "text" : "password"}
@@ -115,6 +117,7 @@ const AuthForm = ({ onSubmit, gAuth, isAdmin }) => {
             sx={{ width: screenSize.width > 800 ? 320 : 250 }}
             id="outlined-basic-pass"
             label="Password"
+            autoComplete="current-password"
             variant="outlined"
             InputProps={{
               endAdornment: (

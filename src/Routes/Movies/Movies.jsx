@@ -247,7 +247,7 @@ const Movies = () => {
               position: "fixed",
               zIndex: 1,
               height: screenSize.width > 1200 ? "100%" : "auto",
-              left: screenSize.width > 1200 && 0,
+              left: screenSize.width > 1200 ? 0 : 0,
               top:
                 screenSize.width < 1200
                   ? screenSize.width < 800
@@ -298,9 +298,8 @@ const Movies = () => {
                     )}
                   </ListItemButton>
                   <Collapse in={sortOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disableRipple disablePadding>
+                    <List component="div" disablePadding>
                       <ListItemButton
-                        disableRipple
                         sx={{
                           pl: screenSize.width > 800 ? 4 : 2,
                           cursor: "default",
@@ -377,7 +376,6 @@ const Movies = () => {
                   <Collapse in={langOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       <ListItemButton
-                        disableRipple
                         sx={{
                           pl: screenSize.width > 800 ? 4 : 2,
                           cursor: "default",
@@ -414,6 +412,7 @@ const Movies = () => {
                               <FormControlLabel
                                 sx={{ color: "primary.main" }}
                                 value={lang.toLowerCase()}
+                                key={idx}
                                 control={
                                   <Checkbox
                                     size={
@@ -453,7 +452,6 @@ const Movies = () => {
                   <Collapse in={genreOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       <ListItemButton
-                        disableRipple
                         sx={{
                           pl: screenSize.width > 800 ? 4 : 2,
                           cursor: "default",
@@ -490,6 +488,7 @@ const Movies = () => {
                               <FormControlLabel
                                 sx={{ color: "primary.main" }}
                                 value={genre.toLowerCase()}
+                                key={idx}
                                 control={
                                   <Checkbox
                                     size={
@@ -522,8 +521,8 @@ const Movies = () => {
           <Box
             sx={{
               bgcolor: "secondary.main",
-              ml: screenSize.width > 1200 && "400px",
-              mt: screenSize.width < 1200 && "55px",
+              ml: screenSize.width > 1200 ? "400px" : 0,
+              mt: screenSize.width < 1200 ? "55px" : 0,
             }}
             className="preview-container"
           >

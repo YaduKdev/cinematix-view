@@ -146,8 +146,6 @@ const AddMovie = () => {
     if (index > -1) tempActorArray.splice(index, 1);
 
     setActors(() => [...tempActorArray]);
-
-    console.log("EVENT", actors, "TEMP++++", tempActorArray);
   };
 
   const handleCinemaChip = (cinema) => {
@@ -157,8 +155,6 @@ const AddMovie = () => {
     if (index > -1) tempCinemaArray.splice(index, 1);
 
     setCinemas(() => [...tempCinemaArray]);
-
-    console.log("EVENT", cinemas, "TEMP++++", tempCinemaArray);
   };
 
   const handleSubmit = (e) => {
@@ -256,7 +252,6 @@ const AddMovie = () => {
 
       addMovie(movieData)
         .then((res) => {
-          console.log(res);
           enqueueSnackbar("Movie Has Been Added!.", {
             variant: "success",
           });

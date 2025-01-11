@@ -324,7 +324,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                     <FormControl>
                       <FormLabel
                         id="demo-radio-buttons-group-label"
-                        focused="true"
+                        focused={true}
                       >
                         <Typography
                           fontWeight="bold"
@@ -339,10 +339,11 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                         name="radio-buttons-group"
                         onChange={setCurrentCity}
                       >
-                        {movie.cities.map((city) => {
+                        {movie.cities.map((city, idx) => {
                           return (
                             <FormControlLabel
                               value={city}
+                              key={idx}
                               control={<Radio />}
                               label={city}
                             />
@@ -357,7 +358,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                     <FormControl>
                       <FormLabel
                         id="demo-radio-buttons-group-label"
-                        focused="true"
+                        focused={true}
                       >
                         <Typography
                           fontWeight="bold"
@@ -372,10 +373,11 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                         name="radio-buttons-group"
                         onChange={setCurrentCinema}
                       >
-                        {movie.nowPlaying.map((cinema) => {
+                        {movie.nowPlaying.map((cinema, idx) => {
                           if (cinema.location === city) {
                             return (
                               <FormControlLabel
+                                key={idx}
                                 value={cinema.name[0]}
                                 control={<Radio />}
                                 label={cinema.name[0]}
@@ -421,10 +423,10 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                           onClose={() => setOpenDate(false)}
                           slotProps={{
                             textField: {
-                              onClick: () => setOpenDate(true),
-                            },
-                            openPickerIcon: {
-                              onClick: () => setOpenDate(true),
+                              readOnly: true,
+                              InputProps: {
+                                onClick: () => setOpenDate(true),
+                              },
                             },
                             field: {
                               readOnly: true,
@@ -452,9 +454,10 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                               setShowTime(event.target.value)
                             }
                           >
-                            {timings.map((time) => {
+                            {timings.map((time, idx) => {
                               return (
                                 <FormControlLabel
+                                  key={idx}
                                   value={time}
                                   control={<Radio />}
                                   label={time}
@@ -481,9 +484,10 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                       alignItems={"center"}
                       gap={5}
                     >
-                      {seatAvailability.map((seat) => {
+                      {seatAvailability.map((seat, idx) => {
                         return (
                           <Box
+                            key={idx}
                             display={"flex"}
                             justifyContent={"center"}
                             alignItems={"center"}
@@ -575,6 +579,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                           if (index + 1 === 25) {
                             return (
                               <Divider
+                                key={index}
                                 sx={{ width: "100%", mt: "10px", mb: "10px" }}
                               >
                                 <Typography
@@ -638,6 +643,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
                           if (index + 1 === 42) {
                             return (
                               <Divider
+                                key={index}
                                 sx={{ width: "100%", mt: "10px", mb: "10px" }}
                               >
                                 <Typography

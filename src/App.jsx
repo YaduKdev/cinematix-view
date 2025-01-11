@@ -23,9 +23,6 @@ function App() {
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
 
-  console.log("isAdminLoggedIn", isAdminLoggedIn);
-  console.log("isUserLoggedIn", isUserLoggedIn);
-
   const GoogleAuthWrapper = () => {
     return (
       <GoogleOAuthProvider clientId="113109406438-heq2jhfert5iqla7rav5r88ff97rrju7.apps.googleusercontent.com">

@@ -131,9 +131,10 @@ const AdminProfile = () => {
                   pb: "20px",
                 }}
               >
-                {adminMovies.map((movie) => {
+                {adminMovies.map((movie, idx) => {
                   return (
                     <Card
+                      key={idx}
                       sx={{
                         display: "flex",
                         width:

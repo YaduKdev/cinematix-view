@@ -53,7 +53,6 @@ const BookingSuccess = () => {
     setTicketData({ ...bookingData });
 
     createBooking(bookingData).then((res) => {
-      console.log(res);
       localStorage.removeItem("movie");
       localStorage.removeItem("cinema");
       localStorage.removeItem("city");
@@ -63,8 +62,6 @@ const BookingSuccess = () => {
       localStorage.removeItem("moviePoster");
       localStorage.removeItem("movieTitle");
     });
-
-    console.log("TICKETDATA===========", ticketData);
   }, []);
 
   return (

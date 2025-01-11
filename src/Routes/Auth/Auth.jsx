@@ -71,8 +71,6 @@ const Auth = () => {
   };
 
   const handleGoogleAuth = (isSignUp) => {
-    console.log("Signing Up", isSignUp);
-
     setSignUp(isSignUp);
 
     googleLogin();

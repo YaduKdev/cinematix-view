@@ -72,8 +72,8 @@ const MovieTicket = forwardRef(({ ticketData }, ref) => {
                   : "Seat:"}
               </strong>{" "}
               &nbsp;
-              {ticketData.movieTheater.seatNumbers.map((seat) => (
-                <span>{seat} &nbsp;</span>
+              {ticketData.movieTheater.seatNumbers.map((seat, idx) => (
+                <span key={idx}>{seat} &nbsp;</span>
               ))}
             </p>
           </Box>

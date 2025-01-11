@@ -56,7 +56,6 @@ const UserProfile = () => {
   const handleDelete = (id) => {
     deleteBooking(id)
       .then((res) => {
-        console.log(res);
         if (res.message === "Successfully Deleted") {
           enqueueSnackbar("Deleted Movie Booking!", { variant: "success" });
           window.location.reload();
@@ -252,9 +251,11 @@ const UserProfile = () => {
                             sx={{ color: "primary.main" }}
                           >
                             <strong>Seats:</strong> &nbsp;
-                            {booking.movieTheater.seatNumbers.map((seat) => (
-                              <span>{seat} &nbsp;</span>
-                            ))}
+                            {booking.movieTheater.seatNumbers.map(
+                              (seat, idx) => (
+                                <span key={idx}>{seat} &nbsp;</span>
+                              )
+                            )}
                           </Typography>
                         </CardContent>
                         <Box
@@ -269,9 +270,9 @@ const UserProfile = () => {
                             sx={{
                               "&:hover": { backgroundColor: "error.light" },
                             }}
+                            onClick={() => handleDelete(booking._id)}
                           >
                             <DeleteForeverIcon
-                              onClick={() => handleDelete(booking._id)}
                               color="error"
                               sx={{
                                 height: screenSize.width > 800 ? 38 : 26,
@@ -283,9 +284,9 @@ const UserProfile = () => {
                             sx={{
                               "&:hover": { backgroundColor: "warning.dark" },
                             }}
+                            onClick={() => openDialog(booking)}
                           >
                             <BookOnlineIcon
-                              onClick={() => openDialog(booking)}
                               color="warning"
                               sx={{
                                 height: screenSize.width > 800 ? 38 : 26,
