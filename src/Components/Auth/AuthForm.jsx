@@ -162,7 +162,7 @@ const AuthForm = ({ onSubmit, gAuth, isAdmin }) => {
             onClick={() => gAuth(isSignUp)}
           >
             <GoogleIcon sx={{ fontSize: "18px", marginRight: "4px" }} />
-            {isSignUp ? "SIGN UP WITH GOOLE" : "LOGIN WITH GOOGLE"}
+            {isSignUp ? "SIGN UP WITH GOOGLE" : "LOGIN WITH GOOGLE"}
           </Button>
           {!isAdmin && (
             <Button
