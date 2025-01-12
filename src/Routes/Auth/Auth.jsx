@@ -41,7 +41,12 @@ const Auth = () => {
 
   const onResRecieved = (data, isSignUp) => {
     dispatch(userActions.login());
-    localStorage.setItem("userID", data.id);
+    if (isSignUp) {
+      localStorage.setItem("userID", data.user._id);
+    } else if (!isSignUp) {
+      localStorage.setItem("userID", data.id);
+    }
+
     localStorage.setItem("logging", "yes");
 
     let msg = isSignUp
