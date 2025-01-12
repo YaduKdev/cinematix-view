@@ -11,7 +11,7 @@ import { grey, red } from "@mui/material/colors";
 
 import "./main.css";
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://cinematix-api.onrender.com";
 
 const theme = createTheme({
   colorSchemes: {

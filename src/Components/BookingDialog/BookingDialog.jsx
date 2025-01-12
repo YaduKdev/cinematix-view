@@ -193,7 +193,7 @@ const BookingDialog = ({ open, handleClose, movie }) => {
     localStorage.setItem("transaction", "yes");
 
     const response = await fetch(
-      "http://localhost:5000/booking/create-checkout-session",
+      "https://cinematix-api.onrender.com/booking/create-checkout-session",
       {
         method: "POST",
         headers: headers,
