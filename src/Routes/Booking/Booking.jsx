@@ -155,7 +155,7 @@ const Booking = () => {
                 <div className="movie-booking-button">
                   <Button
                     variant="contained"
-                    size={screenSize.width > 1200 ? "large" : "medium"}
+                    size="large"
                     color="warning"
                     onClick={handleClickOpen}
                   >
