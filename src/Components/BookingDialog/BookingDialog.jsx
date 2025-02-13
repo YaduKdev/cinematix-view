@@ -22,7 +22,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import dayjs from "dayjs";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js/pure";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import ChairIcon from "@mui/icons-material/Chair";
 import WeekendIcon from "@mui/icons-material/Weekend";

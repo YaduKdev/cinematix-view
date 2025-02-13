@@ -8,10 +8,9 @@ import {
   Dialog,
   IconButton,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, flexbox, margin } from "@mui/system";
+import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { getAllMovies } from "../../api-calls/api-calls";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -21,7 +20,6 @@ import { adminActions, userActions } from "../../store";
 import TheatersIcon from "@mui/icons-material/Theaters";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LoupeIcon from "@mui/icons-material/Loupe";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
