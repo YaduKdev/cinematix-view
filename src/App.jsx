@@ -64,18 +64,15 @@ function App() {
               <Route path="/add" element={<AddMovie />} />
             </>
           )}
-          {localStorage.getItem("transaction") && (
-            <>
-              <Route
-                path="/booking/transaction-success"
-                element={<BookingSuccess />}
-              />
-              <Route
-                path="/booking/transaction-fail"
-                element={<BookingFail />}
-              />
-            </>
-          )}
+          {/* {localStorage.getItem("transaction") && (
+            <> */}
+          <Route
+            path="/booking/transaction-success"
+            element={<BookingSuccess />}
+          />
+          <Route path="/booking/transaction-fail" element={<BookingFail />} />
+          {/* </>
+          )} */}
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </section>
