@@ -66,11 +66,8 @@ function App() {
           )}
           {/* {localStorage.getItem("transaction") && (
             <> */}
-          <Route
-            path="/booking/transaction-success"
-            element={<BookingSuccess />}
-          />
-          <Route path="/booking/transaction-fail" element={<BookingFail />} />
+          <Route path="/success" element={<BookingSuccess />} />
+          <Route path="/fail" element={<BookingFail />} />
           {/* </>
           )} */}
           <Route path="*" element={<NoMatch />} />
