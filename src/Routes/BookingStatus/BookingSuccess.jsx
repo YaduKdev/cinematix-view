@@ -34,9 +34,9 @@ const BookingSuccess = () => {
   useEffect(() => {
     // let sessionQuery = `${searchParams}`;
     // let sessionId = sessionQuery.replace("session_id=", "");
-    const [searchParams] = useSearchParams();
     const sessionId = searchParams.get("session_id");
     const movieID = localStorage.getItem("movie");
+    console.log("SESSION ID:", sessionId);
 
     if (!sessionId || !movieID) {
       navigate("/");
